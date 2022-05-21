@@ -1,4 +1,4 @@
-from scene.mainmenu import mainmenu
+from scene.MainMenu import MainMenu
 
 # Import and initialize the pygame library
 import pygame
@@ -6,7 +6,7 @@ pygame.init()
 
 # Set up the drawing window
 screen = pygame.display.set_mode([1280, 720])
-scene = mainmenu(screen)
+scene = MainMenu(screen)
 
 # Run until the user asks to quit
 running = True
