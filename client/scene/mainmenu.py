@@ -1,9 +1,15 @@
 import pygame
 
 class MainMenu():
-	def __init__(self, screen, dataManager):
-		self.screen = screen
-		self.dataManager = dataManager
+	def __init__(self, gameManager):
+		self.gameManager = gameManager
+		self.dataManager = self.gameManager.dataManager
+		self.screen = self.gameManager.screen
+
+	def events(self):
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				self.gameManager.running = False
 
 	def render(self):
 		self.screen.fill((255, 255, 255))
