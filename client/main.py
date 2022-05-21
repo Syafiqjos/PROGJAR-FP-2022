@@ -1,5 +1,5 @@
-from scene.MainMenu import MainMenu
-from manager.DataManager import DataManager
+from Scene.MainMenu import MainMenu
+from Manager.DataManager import DataManager
 
 # Import and initialize the pygame library
 import pygame
