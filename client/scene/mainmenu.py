@@ -9,6 +9,7 @@ class MainMenu():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
 		self.dataManager = self.gameManager.dataManager
+		self.eventManager = self.gameManager.eventManager
 		self.screen = self.gameManager.screen
 		self.sprites = []
 
@@ -16,6 +17,7 @@ class MainMenu():
 
 	def awake(self):
 		self.robot = Sprite(self.screen, (0, 0), (0.2, 0.2), 'Assets/robotball/skeleton-animation_01.png')
+		# self.robot.events['onclick'] = self.exitGame;
 
 		self.sprites.append(self.robot)
 		
@@ -24,6 +26,8 @@ class MainMenu():
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				self.gameManager.running = False
+			if self.eventManager.checkOnClick(event, self.robot):
+				print('hapen')
 
 	def render(self):
 		self.screen.fill((255, 255, 255))
@@ -31,4 +35,9 @@ class MainMenu():
 		
 		for sprite in self.sprites:
 			sprite.render()
-		
+
+	def playGame(self):
+		self.gameManager.scene = MainMenu(this.gameManager)
+
+	def exitGame(self):
+		self.gameManager.running = False
