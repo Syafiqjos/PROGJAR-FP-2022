@@ -1,4 +1,5 @@
 from scene.MainMenu import MainMenu
+from manager.DataManager import DataManager
 
 # Import and initialize the pygame library
 import pygame
@@ -6,7 +7,8 @@ pygame.init()
 
 # Set up the drawing window
 screen = pygame.display.set_mode([1280, 720])
-scene = MainMenu(screen)
+dataManager = DataManager();
+scene = MainMenu(screen, dataManager)
 
 # Run until the user asks to quit
 running = True
