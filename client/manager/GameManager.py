@@ -7,6 +7,7 @@ class GameManager():
 		self.screen = pygame.display.set_mode(screenSize)
 		self.dataManager = dataManager
 		self.scene = None
+		self.clock = pygame.time.Clock()
 
 		self.running = True
 
@@ -21,6 +22,7 @@ class GameManager():
 				self.scene.render()
 
 			pygame.display.flip()
+			self.clock.tick(60)
 
 		pygame.quit()
 		
