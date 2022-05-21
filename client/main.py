@@ -6,7 +6,7 @@ import pygame
 pygame.init()
 
 # Set up the drawing window
-screen = pygame.display.set_mode([1280, 720])
+screen = pygame.display.set_mode([720, 480])
 dataManager = DataManager();
 scene = MainMenu(screen, dataManager)
 
