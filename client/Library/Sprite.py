@@ -11,6 +11,7 @@ class Sprite():
 		self.image = pygame.image.load(imageSrc) # image
 		self.imageRenderOriginal = self.image.convert_alpha() # png
 		self.imageRender = self.imageRenderOriginal
+		self.rect = self.imageRender.get_rect()
 
 		self.setDirty()
 
@@ -27,6 +28,8 @@ class Sprite():
 		height = self.image.get_height() * self.scale[1]
 		transform = (int(width), int(height))
 		self.imageRender = pygame.transform.scale(self.imageRender, transform)
+		self.rect = self.imageRender.get_rect()
 
 	def render(self):
 		self.screen.blit(self.imageRender, (self.position[0], self.position[1]))
+		pygame.draw.rect(self.screen, (0, 255, 0), self.rect)
