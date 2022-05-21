@@ -1,11 +1,12 @@
 import pygame
 
 class GameManager():
-	def __init__(self, dataManager, screenSize):
+	def __init__(self, dataManager, eventManager, screenSize):
 		pygame.init()
 		
 		self.screen = pygame.display.set_mode(screenSize)
 		self.dataManager = dataManager
+		self.eventManager = eventManager
 		self.scene = None
 		self.clock = pygame.time.Clock()
 
