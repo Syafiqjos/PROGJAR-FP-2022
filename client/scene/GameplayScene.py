@@ -5,6 +5,10 @@ from Library.Sprite import Sprite
 
 import pygame
 
+class MatahariOrb(Sprite):
+	def update(self):
+		self.setPosition((self.position[0], self.position[1] + 1))
+
 class GameplayScene():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
@@ -14,6 +18,8 @@ class GameplayScene():
 		self.sprites = { 'ALL': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [] }
 		self.objects = {}
 		self.isPaused = False
+
+		self.plantsOrbs = []
 
 		self.awake()
 
@@ -56,8 +62,10 @@ class GameplayScene():
 		self.drawSprite('paused_disconnectButton', 'PAUSED', (120, 240), (1, 1), 'Assets/gameicons/PNG/White/1x/door.png')
 
 	def awakePlants(self):
+		state = 'PLANTS'
+
 		# Matahari Plants
-		pass
+		self.plantsOrbs.append(MatahariOrb(self.screen, (10, 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png'))
 
 	def awakeZombies(self):
 		# Matahari Zombies
@@ -92,7 +100,10 @@ class GameplayScene():
 						print('BG TILE :' + objectName)
 
 	def eventsPlants(self, event):
-		pass
+		for orb in self.plantsOrbs:
+			if self.eventManager.checkOnClick(event, orb):
+				self.plantsOrbs.remove(orb)
+				print('PLANTS ORB OBTAINED')
 
 	def eventsZombies(self, event):
 		pass
@@ -125,6 +136,9 @@ class GameplayScene():
 			sprite.render()
 		for sprite in self.sprites[self.state]:
 			sprite.render()
+		if self.state == 'PLANTS':
+			for sprite in self.plantsOrbs:
+				sprite.render()
 		if self.isPaused:
 			for sprite in self.sprites['PAUSED']:
 				sprite.render()
