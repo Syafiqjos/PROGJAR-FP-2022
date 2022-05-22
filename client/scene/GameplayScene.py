@@ -28,6 +28,8 @@ class GameplayScene():
 		self.plantsMatahariTimerMax = 200
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
 
+		self.selectedDD = None
+
 		self.awake()
 
 	def awake(self):
@@ -68,6 +70,9 @@ class GameplayScene():
 			self.drawSprite('ui_plantsDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
 			self.drawSprite('ui_plantsDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
 			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
+
+		self.drawSprite('ui_DDSelect', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/tablet.png')
+		self.objects['ui_DDSelect'].isRender = False
 		
 		# Pause Button
 		self.drawSprite('ui_pauseButton', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
@@ -114,15 +119,29 @@ class GameplayScene():
 		self.sprites[state].append(self.objects[objName])
 
 	def eventsAll(self, event):
+		bgTilePressed = False
+		bgTilePressedName = None
+		bgTilePressedObj = None
+
 		# bg tile
 		for i in range(0, 9): # x
 			for j in range(0, 5): # y
 				objectName = 'all_bgTile' + str(i) + 'x' + str(j)
 				if objectName in self.objects:
 					if self.eventManager.checkOnClick(event, self.objects[objectName]):
-						self.sprites['ALL'].remove(self.objects[objectName])
-						del self.objects[objectName]
+						# self.sprites['ALL'].remove(self.objects[objectName])
+						# del self.objects[objectName]
+						bgTilePressed = True
+						bgTilePressedName = objectName
+						bgTilePressedObj = self.objects[objectName]
 						print('BG TILE :' + objectName)
+
+		if bgTilePressed and self.selectedDD != None:
+			print('Place DD of: ' + self.selectedDD + ' into ' + bgTilePressedName)
+			self.placeSelectedDD(bgTilePressedObj)
+			self.unselectDD()
+		elif self.selectedDD != None and self.eventManager.checkOnClickAny(event):
+			self.unselectDD()
 
 	def eventsUI(self, event):
 		# pause button
@@ -135,6 +154,15 @@ class GameplayScene():
 				self.plantsOrbs.remove(orb)
 				self.pickMatahari()
 				print('PLANTS ORB OBTAINED, CURRENCY: ' + str(self.getCurrency()))
+
+		if self.eventManager.checkOnClick(event, self.objects['ui_plantsDD1']):
+			self.selectDD(self.objects['ui_plantsDD1'], 'ui_plantsDD1')
+		elif self.eventManager.checkOnClick(event, self.objects['ui_plantsDD2']):
+			self.selectDD(self.objects['ui_plantsDD2'], 'ui_plantsDD2')
+		elif self.eventManager.checkOnClick(event, self.objects['ui_plantsDD3']):
+			self.selectDD(self.objects['ui_plantsDD3'], 'ui_plantsDD3')
+		elif self.eventManager.checkOnClick(event, self.objects['ui_plantsDD4']):
+			self.selectDD(self.objects['ui_plantsDD4'], 'ui_plantsDD4')
 
 	def eventsZombies(self, event):
 		pass
@@ -197,3 +225,17 @@ class GameplayScene():
 
 	def unpauseGame(self):
 		self.isPaused = False
+
+	def selectDD(self, toBeSelected, name):
+		selectObj = self.objects['ui_DDSelect']
+		selectObj.isRender = True
+		selectObj.setPosition(toBeSelected.position)
+		self.selectedDD = name
+
+	def unselectDD(self):
+		selectObj = self.objects['ui_DDSelect']
+		selectObj.isRender = False
+		self.selectedDD = None
+
+	def placeSelectedDD(self, tileObj):
+		print('DD Placed.')
