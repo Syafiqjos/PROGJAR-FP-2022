@@ -191,6 +191,7 @@ class GameplayScene():
 		self.plantsBullets = []
 
 		self.zombiesOrbs = []
+		self.zombiesIndex = 0
 		self.zombiesMatahariTimerMax = 200
 		self.zombiesMatahariTimer = self.zombiesMatahariTimerMax
 
@@ -485,7 +486,6 @@ class GameplayScene():
 
 	def zombiesPlaceSelectedDD(self, tileName, tileObj):
 		price = self.getPriceDD(self.selectedDD)
-		occupiedName = 'allzombies_zombiesDD:' + tileName
 		if price > self.getCurrency():
 			return 'NOMONEY'
 		self.setCurrency(self.getCurrency() - price)
@@ -549,7 +549,8 @@ class GameplayScene():
 				del self.objects[spriteName]
 
 	def zombiesPlaceDD(self, ddName, tileName, tileObj):
-		spriteName = 'allzombies_zombiesDD:' + tileName
+		spriteName = 'allzombies_zombiesDD:' + str(self.zombiesIndex)
+		self.zombiesIndex += 1
 		if ddName == 'ui_zombiesDD1':
 			sprite = ZombieWalkerNormal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
