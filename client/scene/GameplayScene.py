@@ -11,7 +11,7 @@ class MatahariOrb(Sprite):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
 
 	def awake(self):
-		self.stopFallPos = 80 + random.random() * 320
+		self.stopFallPos = 100 + random.random() * 300
 
 	def update(self):
 		if self.position[1] < self.stopFallPos:
@@ -268,7 +268,7 @@ class GameplayScene():
 		return sprite
 
 	def zombiesSpawnRandomMatahari(self):
-		posX = 400 + random.random() * (320 - 20)
+		posX = 360 + random.random() * (320 - 20)
 		self.zombiesSpawnMatahari((posX, 0))
 
 	def zombiesSpawnMatahari(self, position):
