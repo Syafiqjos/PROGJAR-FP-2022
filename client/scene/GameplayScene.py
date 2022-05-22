@@ -137,7 +137,7 @@ class GameplayScene():
 		self.awake()
 
 	def awake(self):
-		self.state = 'ZOMBIES' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
+		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
 		self.resetCurrency()
 
@@ -399,6 +399,11 @@ class GameplayScene():
 		self.selectedDD = None
 
 	def placeSelectedDD(self, tileName, tileObj):
+		if self.state == 'PLANTS':
+			return self.plantsPlaceSelectedDD(tileName, tileObj)
+		return None
+
+	def plantsPlaceSelectedDD(self, tileName, tileObj):
 		price = self.getPriceDD(self.selectedDD)
 		occupiedName = 'allplants_plantsDD:' + tileName
 		# if price not 0 (not gonna clear this tile) and tile is occupied
