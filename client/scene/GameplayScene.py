@@ -62,6 +62,12 @@ class GameplayScene():
 
 		# Drag Drop UI
 		self.drawTileBatch('ui_matahariUITile', 'UI', (10 + 60, 10), (6, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
+		if self.state == 'PLANTS':
+			plantsDDPivot = (8, 6)
+			self.drawSprite('ui_plantsDD1', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 0, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
+			self.drawSprite('ui_plantsDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
+			self.drawSprite('ui_plantsDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
+			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
 		
 		# Pause Button
 		self.drawSprite('ui_pauseButton', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
