@@ -280,8 +280,9 @@ class GameplayScene():
 
 	def placeSelectedDD(self, tileName, tileObj):
 		price = self.getPriceDD(self.selectedDD)
-		occupiedName = 'allplants_plantsDD1:' + tileName
-		if occupiedName in self.objects:
+		occupiedName = 'allplants_plantsDD:' + tileName
+		# if price not 0 (not gonna clear this tile) and tile is occupied
+		if price != 0 and occupiedName in self.objects:
 			return 'OCCUPIED'
 		elif price > self.getCurrency():
 			return 'NOMONEY'
@@ -303,7 +304,7 @@ class GameplayScene():
 		return 1000000
 
 	def placeDD(self, ddName, tileName, tileObj):
-		spriteName = 'allplants_plantsDD1:' + tileName
+		spriteName = 'allplants_plantsDD:' + tileName
 		if ddName == 'ui_plantsDD1':
 			sprite = TumbuhanMatahari(self.screen, tileObj.position)
 			sprite.setup(self.plantsSpawnMatahari)
@@ -313,4 +314,6 @@ class GameplayScene():
 		elif ddName == 'ui_plantsDD3':
 			self.drawSprite('allplants_plantsDD3', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
 		elif ddName == 'ui_plantsDD4':
-			self.drawSprite('allplants_plantsDD4', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
+			if spriteName in self.objects:
+				self.sprites['ALLPLANTS'].remove(self.objects[spriteName])
+				del self.objects[spriteName]
