@@ -257,6 +257,9 @@ class GameplayScene():
 
 	def awakeZombies(self):
 		self.zombiesSpawnRandomMatahari()
+		self.plantsPlaceDD('ui_plantsDD1', 'all_bgTile0x0', self.objects['all_bgTile0x0'])
+		self.plantsPlaceDD('ui_plantsDD2', 'all_bgTile1x1', self.objects['all_bgTile1x1'])
+		self.plantsPlaceDD('ui_plantsDD3', 'all_bgTile1x2', self.objects['all_bgTile1x2'])
 
 	def plantsSpawnRandomMatahari(self):
 		posX = 20 + random.random() * (320 - 20)
