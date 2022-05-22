@@ -51,7 +51,9 @@ class GameplayScene():
 
 	def awakePaused(self):
 		# Foreground paused UI
-		pass
+		self.drawSprite('paused_bgPause', 'PAUSED', (80, 80), (36, 20), 'Assets/kenney_pixelshmup/Tiles/tile_0115.png')
+		self.drawSprite('paused_unpauseButton', 'PAUSED', (240, 240), (1, 1), 'Assets/gameicons/PNG/White/1x/forward.png')
+		self.drawSprite('paused_disconnectButton', 'PAUSED', (120, 240), (1, 1), 'Assets/gameicons/PNG/White/1x/door.png')
 
 	def awakePlants(self):
 		# Matahari Plants
@@ -96,7 +98,12 @@ class GameplayScene():
 		pass
 
 	def eventsPaused(self, event):
-		pass
+		# unpause button
+		if self.eventManager.checkOnClick(event, self.objects['paused_unpauseButton']):
+			self.unpauseGame()
+		# disconnect
+		if self.eventManager.checkOnClick(event, self.objects['paused_disconnectButton']):
+			self.disconnectToMainMenu()
 
 	def events(self):
 		for event in pygame.event.get():
@@ -118,6 +125,9 @@ class GameplayScene():
 			sprite.render()
 		for sprite in self.sprites[self.state]:
 			sprite.render()
+		if self.isPaused:
+			for sprite in self.sprites['PAUSED']:
+				sprite.render()
 
 	def pauseGame(self):
 		self.isPaused = True
