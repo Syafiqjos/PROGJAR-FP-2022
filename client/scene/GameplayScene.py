@@ -171,9 +171,11 @@ class GameplayScene():
 
 		if bgTilePressed and self.selectedDD != None:
 			print('Place DD of: ' + self.selectedDD + ' into ' + bgTilePressedName)
-			successPlacing = self.placeSelectedDD(bgTilePressedObj)
-			if not successPlacing:
+			messagePlacing = self.placeSelectedDD(bgTilePressedName, bgTilePressedObj)
+			if messagePlacing == 'NOMONEY':
 				print('No Money')
+			elif messagePlacing == 'OCCUPIED':
+				print('Tile was occupied')
 			self.unselectDD()
 		elif self.selectedDD != None and self.eventManager.checkOnClickAny(event):
 			self.unselectDD()
@@ -276,14 +278,17 @@ class GameplayScene():
 		selectObj.isRender = False
 		self.selectedDD = None
 
-	def placeSelectedDD(self, tileObj):
+	def placeSelectedDD(self, tileName, tileObj):
 		price = self.getPriceDD(self.selectedDD)
-		if price <= self.getCurrency():
-			self.setCurrency(self.getCurrency() - price)
-			self.placeDD(self.selectedDD, tileObj)
-			print('DD Placed.')
-			return True
-		return False
+		occupiedName = 'allplants_plantsDD1:' + tileName
+		if occupiedName in self.objects:
+			return 'OCCUPIED'
+		elif price > self.getCurrency():
+			return 'NOMONEY'
+		self.setCurrency(self.getCurrency() - price)
+		self.placeDD(self.selectedDD, tileName, tileObj)
+		print('DD Placed.')
+		return None
 
 	def getPriceDD(self, ddName):
 		if ddName == 'ui_plantsDD1':
@@ -297,11 +302,12 @@ class GameplayScene():
 
 		return 1000000
 
-	def placeDD(self, ddName, tileObj):
+	def placeDD(self, ddName, tileName, tileObj):
+		spriteName = 'allplants_plantsDD1:' + tileName
 		if ddName == 'ui_plantsDD1':
 			sprite = TumbuhanMatahari(self.screen, tileObj.position)
 			sprite.setup(self.plantsSpawnMatahari)
-			self.registerSprite('allplants_plantsDD1', 'ALLPLANTS', sprite)
+			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
 			self.drawSprite('allplants_plantsDD2', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
 		elif ddName == 'ui_plantsDD3':
