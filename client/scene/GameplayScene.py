@@ -24,8 +24,18 @@ class PeluruBuncis(Sprite):
 	def awake(self):
 		self.bulletSpeed = 2
 
+	def setup(self, scene):
+		self.scene = scene
+
 	def update(self):
 		self.setPosition((self.position[0] + self.bulletSpeed, self.position[1]))
+		if self.position[0] > 800:
+			self.destroy()
+
+	def destroy(self):
+		if self in self.scene.plantsBullets:
+			self.scene.plantsBullets.remove(self)
+			del self
 
 class TumbuhanMatahari(Sprite):
 	def __init__(self, screen, position):
@@ -62,6 +72,7 @@ class TumbuhanBuncisNormal(Sprite):
 
 	def shoot(self):
 		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+		bullet.setup(self.scene)
 		self.scene.plantsBullets.append(bullet)
 
 	def update(self):
