@@ -7,6 +7,9 @@ import pygame
 import random
 
 class MatahariOrb(Sprite):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
+
 	def awake(self):
 		self.stopFallPos = 80 + random.random() * 320
 
@@ -117,7 +120,7 @@ class GameplayScene():
 		self.plantsSpawnMatahari((posX, 0))
 
 	def plantsSpawnMatahari(self, position):
-		sprite = MatahariOrb(self.screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
+		sprite = MatahariOrb(self.screen, position)
 		self.plantsOrbs.append(sprite)
 		return sprite
 
