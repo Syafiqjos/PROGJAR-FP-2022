@@ -29,7 +29,7 @@ class GameplayScene():
 		
 	def awakeAll(self):
 		# Background
-		self.drawTileBatch((30 + 60, 140), (10, 5), 'all_bgTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0110.png')
+		self.drawTileBatch((30 + 60, 140), (9, 5), 'all_bgTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0110.png')
 
 		# Plant Greaser Tile
 		self.drawTileBatch((30 + 0, 140), (1, 5), 'all_bgPlantGreaserTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0076.png')
@@ -69,7 +69,15 @@ class GameplayScene():
 				self.sprites['ALL'].append(self.objects[objName])
 
 	def eventsAll(self, event):
-		pass
+		# bg tile
+		for i in range(0, 9): # x
+			for j in range(0, 5): # y
+				objectName = 'all_bgTile' + str(i) + 'x' + str(j)
+				if objectName in self.objects:
+					if self.eventManager.checkOnClick(event, self.objects[objectName]):
+						self.sprites['ALL'].remove(self.objects[objectName])
+						del self.objects[objectName]
+						print('BG TILE :' + objectName)
 
 	def eventsPlants(self, event):
 		pass
