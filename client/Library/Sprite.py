@@ -34,7 +34,11 @@ class Sprite():
 		self.rect = self.rect.move(self.position[0], self.position[1])
 
 	def render(self):
+		self.update()
 		self.screen.blit(self.imageRender, (self.position[0], self.position[1]))
 
 		# Rect Debug
 		# pygame.draw.rect(self.screen, (0, 255, 0), self.rect)
+
+	def update(self):
+		pass
