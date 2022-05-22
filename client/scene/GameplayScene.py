@@ -83,6 +83,35 @@ class TumbuhanBuncisNormal(Sprite):
 			self.plantsShootTimer = self.plantsShootTimerMax
 			self.shoot()
 
+class TumbuhanBuncisJago(Sprite):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
+
+	def awake(self):
+		self.plantsShootTimerMax = 200
+		self.plantsShootTimerMaxShort = 25
+		self.plantsShootCount = 0
+		self.plantsShootTimer = self.plantsShootTimerMax
+
+	def setup(self, scene):
+		self.scene = scene
+
+	def shoot(self):
+		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+		bullet.setup(self.scene)
+		self.scene.plantsBullets.append(bullet)
+		self.plantsShootCount += 1
+
+	def update(self):
+		if self.plantsShootTimer > 0:
+			self.plantsShootTimer -= 1
+		else:
+			if self.plantsShootCount % 2 == 0:
+				self.plantsShootTimer = self.plantsShootTimerMaxShort
+			else:
+				self.plantsShootTimer = self.plantsShootTimerMax
+			self.shoot()
+
 class GameplayScene():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
@@ -365,7 +394,9 @@ class GameplayScene():
 			sprite.setup(self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD3':
-			self.drawSprite('allplants_plantsDD3', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
+			sprite = TumbuhanBuncisJago(self.screen, tileObj.position)
+			sprite.setup(self)
+			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD4':
 			if spriteName in self.objects:
 				self.sprites['ALLPLANTS'].remove(self.objects[spriteName])
