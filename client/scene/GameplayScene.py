@@ -7,8 +7,12 @@ import pygame
 import random
 
 class MatahariOrb(Sprite):
+	def awake(self):
+		self.stopFallPos = 80 + random.random() * 320
+
 	def update(self):
-		self.setPosition((self.position[0], self.position[1] + 1))
+		if self.position[1] < self.stopFallPos:
+			self.setPosition((self.position[0], self.position[1] + 1))
 
 class GameplayScene():
 	def __init__(self, gameManager):
