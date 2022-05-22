@@ -29,19 +29,19 @@ class GameplayScene():
 		
 	def awakeAll(self):
 		# Background
-		self.drawTileBatch((30 + 60, 140), (9, 5), 'all_bgTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0110.png')
+		self.drawTileBatch('all_bgTile', 'ALL', (30 + 60, 140), (9, 5), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0110.png')
 
 		# Plant Greaser Tile
-		self.drawTileBatch((30 + 0, 140), (1, 5), 'all_bgPlantGreaserTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0076.png')
+		self.drawTileBatch('all_bgPlantGreaserTile', 'ALL', (30 + 0, 140), (1, 5), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0076.png')
 
 		# Zombie Deploy Tile
-		self.drawTileBatch((30 + 60 * 10, 140), (1, 5), 'all_bgZombieDeployTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0077.png')
+		self.drawTileBatch('all_bgZombieDeployTile', 'ALL', (30 + 60 * 10, 140), (1, 5), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0077.png')
 
 		# Matahari UI
-		self.drawTileBatch((10, 10), (1, 1), 'all_matahariUI', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0054.png')
+		self.drawTileBatch('all_matahariUI', 'ALL', (10, 10), (1, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0054.png')
 
 		# Drag Drop UI
-		self.drawTileBatch((10 + 60, 10), (6, 1), 'all_matahariUITile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
+		self.drawTileBatch('all_matahariUITile', 'ALL', (10 + 60, 10), (6, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
 		
 		# Pause Button
 		self.drawSprite('all_pauseButton', 'ALL', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
@@ -61,15 +61,14 @@ class GameplayScene():
 		# Matahari Zombies
 		pass
 
-	def drawTileBatch(self, pivot, length, objectNamespace, tileSize, tileScale, imagePath):
+	def drawTileBatch(self, objectNamespace, state, pivot, length, tileSize, tileScale, imagePath):
 		tilePivot = pivot
 		for i in range(0, length[0]): # x
 			for j in range(0, length[1]): # y
 				objName = objectNamespace + str(i) + 'x' + str(j)
 				posX = tilePivot[0] + i * tileSize
 				posY = tilePivot[1] + j * tileSize
-				self.objects[objName] = Sprite(self.screen, (posX, posY), (tileScale, tileScale), imagePath)
-				self.sprites['ALL'].append(self.objects[objName])
+				self.drawSprite(objName, state, (posX, posY), (tileScale, tileScale), imagePath)
 
 	def drawSprite(self, objName, state, pos, scale, imagePath):
 		self.objects[objName] = Sprite(self.screen, (pos[0], pos[1]), (scale[0], scale[1]), imagePath)
