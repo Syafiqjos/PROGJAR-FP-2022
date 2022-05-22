@@ -17,6 +17,16 @@ class MatahariOrb(Sprite):
 		if self.position[1] < self.stopFallPos:
 			self.setPosition((self.position[0], self.position[1] + 1))
 
+class PeluruBuncis(Sprite):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (1, 1), 'Assets/gameicons/PNG/White/1x/minus.png')
+
+	def awake(self):
+		self.bulletSpeed = 2
+
+	def update(self):
+		self.setPosition((self.position[0] + self.bulletSpeed, self.position[1]))
+
 class TumbuhanMatahari(Sprite):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
