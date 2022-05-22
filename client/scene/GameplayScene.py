@@ -152,6 +152,26 @@ class ZombieWalkerJago(Sprite):
 			# eat brain and win the current lane
 			pass
 
+class ZombieWalkerHandal(Sprite):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
+
+	def awake(self):
+		self.healthTotal = 500
+		self.walkingSpeed = 1
+
+	def setup(self, scene):
+		self.scene = scene
+
+	def update(self):
+		# walk to the left
+		# check if not out of bound on left yet
+		if self.position[0] > 10:
+			self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
+		else:
+			# eat brain and win the current lane
+			pass
+
 class GameplayScene():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
@@ -534,6 +554,6 @@ class GameplayScene():
 			sprite.setup(self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
 		elif ddName == 'ui_zombiesDD3':
-			sprite = ZombieWalkerNormal(self.screen, tileObj.position)
+			sprite = ZombieWalkerHandal(self.screen, tileObj.position)
 			sprite.setup(self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
