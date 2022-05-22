@@ -20,7 +20,7 @@ class GameplayScene():
 		self.dataManager = self.gameManager.dataManager
 		self.eventManager = self.gameManager.eventManager
 		self.screen = self.gameManager.screen
-		self.sprites = { 'ALL': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [], 'UI': [] }
+		self.sprites = { 'ALL': [], 'ALLPLANTS': [], 'ALLZOMBIES': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [], 'UI': [] }
 		self.objects = {}
 		self.isPaused = False
 
@@ -200,6 +200,10 @@ class GameplayScene():
 		
 		for sprite in self.sprites['ALL']:
 			sprite.render()
+		for sprite in self.sprites['ALLPLANTS']:
+			sprite.render()
+		for sprite in self.sprites['ALLZOMBIES']:
+			sprite.render()
 		for sprite in self.sprites[self.state]:
 			sprite.render()
 		if self.state == 'PLANTS':
@@ -246,6 +250,7 @@ class GameplayScene():
 		price = self.getPriceDD(self.selectedDD)
 		if price <= self.getCurrency():
 			self.setCurrency(self.getCurrency() - price)
+			self.placeDD(self.selectedDD, tileObj)
 			print('DD Placed.')
 			return True
 		return False
@@ -261,3 +266,13 @@ class GameplayScene():
 			return 0
 
 		return 1000000
+
+	def placeDD(self, ddName, tileObj):
+		if ddName == 'ui_plantsDD1':
+			self.drawSprite('allplants_plantsDD1', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
+		elif ddName == 'ui_plantsDD2':
+			self.drawSprite('allplants_plantsDD2', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
+		elif ddName == 'ui_plantsDD3':
+			self.drawSprite('allplants_plantsDD3', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
+		elif ddName == 'ui_plantsDD4':
+			self.drawSprite('allplants_plantsDD4', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
