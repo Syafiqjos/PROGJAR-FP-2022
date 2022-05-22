@@ -118,7 +118,7 @@ class ZombieWalkerNormal(Sprite):
 
 	def awake(self):
 		self.healthTotal = 100
-		self.walkingSpeed = 1
+		self.walkingSpeed = 0.25
 
 	def setup(self, scene):
 		self.scene = scene
@@ -138,7 +138,7 @@ class ZombieWalkerJago(Sprite):
 
 	def awake(self):
 		self.healthTotal = 200
-		self.walkingSpeed = 1
+		self.walkingSpeed = 0.25
 
 	def setup(self, scene):
 		self.scene = scene
@@ -158,7 +158,7 @@ class ZombieWalkerHandal(Sprite):
 
 	def awake(self):
 		self.healthTotal = 500
-		self.walkingSpeed = 1
+		self.walkingSpeed = 0.25
 
 	def setup(self, scene):
 		self.scene = scene
