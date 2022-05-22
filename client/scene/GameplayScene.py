@@ -118,7 +118,10 @@ class GameplayScene():
 				self.drawSprite(objName, state, (posX, posY), (tileScale, tileScale), imagePath)
 
 	def drawSprite(self, objName, state, pos, scale, imagePath):
-		self.objects[objName] = Sprite(self.screen, (pos[0], pos[1]), (scale[0], scale[1]), imagePath)
+		self.registerSprite(objName, state, Sprite(self.screen, (pos[0], pos[1]), (scale[0], scale[1]), imagePath))
+
+	def registerSprite(self, objName, state, sprite):
+		self.objects[objName] = sprite
 		self.sprites[state].append(self.objects[objName])
 
 	def eventsAll(self, event):
