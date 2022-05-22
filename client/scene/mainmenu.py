@@ -41,7 +41,7 @@ class MainMenu():
 			sprite.render()
 
 	def playGame(self):
-		self.gameManager.scene = MainMenu(self.gameManager)
+		self.gameManager.loadScene('LobbyMenu')
 
 	def exitGame(self):
 		self.gameManager.running = False
