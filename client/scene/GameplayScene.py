@@ -417,6 +417,12 @@ class GameplayScene():
 		return None
 
 	def getPriceDD(self, ddName):
+		if self.state == 'PLANTS':
+			return self.plantsGetPriceDD(ddName)
+
+		return 1000000
+
+	def plantsGetPriceDD(self, ddName):
 		if ddName == 'ui_plantsDD1':
 			return 25
 		elif ddName == 'ui_plantsDD2':
@@ -429,6 +435,10 @@ class GameplayScene():
 		return 1000000
 
 	def placeDD(self, ddName, tileName, tileObj):
+		if self.state == 'PLANTS':
+			self.plantsPlaceDD(ddName, tileName, tileObj)
+
+	def plantsPlaceDD(self, ddName, tileName, tileObj):
 		spriteName = 'allplants_plantsDD:' + tileName
 		if ddName == 'ui_plantsDD1':
 			sprite = TumbuhanMatahari(self.screen, tileObj.position)
