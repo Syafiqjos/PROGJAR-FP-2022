@@ -45,8 +45,9 @@ class TumbuhanMatahari(Sprite):
 		self.plantsMatahariTimerMax = 400
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
 
-	def setup(self, plantsSpawnMatahari):
-		self.plantsSpawnMatahari = plantsSpawnMatahari
+	def setup(self, scene):
+		self.scene = scene
+		self.plantsSpawnMatahari = self.scene.plantsSpawnMatahari
 
 	def spawnMatahari(self):
 		matahari = self.plantsSpawnMatahari((self.position[0], self.position[1] - 10))
@@ -357,7 +358,7 @@ class GameplayScene():
 		spriteName = 'allplants_plantsDD:' + tileName
 		if ddName == 'ui_plantsDD1':
 			sprite = TumbuhanMatahari(self.screen, tileObj.position)
-			sprite.setup(self.plantsSpawnMatahari)
+			sprite.setup(self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
 			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
