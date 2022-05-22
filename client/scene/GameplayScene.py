@@ -128,6 +128,10 @@ class GameplayScene():
 
 		self.plantsBullets = []
 
+		self.zombiesOrbs = []
+		self.zombiesMatahariTimerMax = 200
+		self.zombiesMatahariTimer = self.zombiesMatahariTimerMax
+
 		self.selectedDD = None
 
 		self.awake()
@@ -192,8 +196,7 @@ class GameplayScene():
 		self.plantsSpawnRandomMatahari()
 
 	def awakeZombies(self):
-		# Matahari Zombies
-		pass
+		self.zombiesSpawnRandomMatahari()
 
 	def plantsSpawnRandomMatahari(self):
 		posX = 20 + random.random() * (320 - 20)
@@ -202,6 +205,15 @@ class GameplayScene():
 	def plantsSpawnMatahari(self, position):
 		sprite = MatahariOrb(self.screen, position)
 		self.plantsOrbs.append(sprite)
+		return sprite
+
+	def zombiesSpawnRandomMatahari(self):
+		posX = 400 + random.random() * (320 - 20)
+		self.zombiesSpawnMatahari((posX, 0))
+
+	def zombiesSpawnMatahari(self, position):
+		sprite = MatahariOrb(self.screen, position)
+		self.zombiesOrbs.append(sprite)
 		return sprite
 
 	def resetCurrency(self):
@@ -285,6 +297,12 @@ class GameplayScene():
 			self.selectDD(self.objects['ui_plantsDD4'], 'ui_plantsDD4')
 
 	def eventsZombies(self, event):
+		for orb in self.zombiesOrbs:
+			if self.eventManager.checkOnClick(event, orb):
+				self.zombiesOrbs.remove(orb)
+				self.pickMatahari()
+				print('ZOMBIES ORB OBTAINED, CURRENCY: ' + str(self.getCurrency()))
+
 		if self.eventManager.checkOnClick(event, self.objects['ui_zombiesDD1']):
 			self.selectDD(self.objects['ui_zombiesDD1'], 'ui_zombiesDD1')
 		elif self.eventManager.checkOnClick(event, self.objects['ui_zombiesDD2']):
@@ -331,6 +349,9 @@ class GameplayScene():
 		if self.state == 'PLANTS':
 			for sprite in self.plantsOrbs:
 				sprite.render()
+		if self.state == 'ZOMBIES':
+			for sprite in self.zombiesOrbs:
+				sprite.render()
 		for sprite in self.sprites['UI']:
 			sprite.render()
 		if self.isPaused:
@@ -340,6 +361,8 @@ class GameplayScene():
 	def update(self):
 		if self.state == 'PLANTS':
 			self.updatePlants()
+		elif self.state == 'ZOMBIES':
+			self.updateZombies()
 
 	def updatePlants(self):
 		if self.plantsMatahariTimer > 0:
@@ -347,6 +370,13 @@ class GameplayScene():
 		else:
 			self.plantsMatahariTimer = self.plantsMatahariTimerMax
 			self.plantsSpawnRandomMatahari()
+
+	def updateZombies(self):
+		if self.zombiesMatahariTimer > 0:
+			self.zombiesMatahariTimer -= 1
+		else:
+			self.zombiesMatahariTimer = self.zombiesMatahariTimerMax
+			self.zombiesSpawnRandomMatahari()
 
 	def pauseGame(self):
 		self.isPaused = True
