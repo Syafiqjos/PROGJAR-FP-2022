@@ -133,7 +133,7 @@ class GameplayScene():
 		self.awake()
 
 	def awake(self):
-		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
+		self.state = 'ZOMBIES' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
 		self.resetCurrency()
 
@@ -170,6 +170,11 @@ class GameplayScene():
 			self.drawSprite('ui_plantsDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
 			self.drawSprite('ui_plantsDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
 			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
+		elif self.state == 'ZOMBIES':
+			plantsDDPivot = (8, 6)
+			self.drawSprite('ui_zombiesDD1', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 0, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
+			self.drawSprite('ui_zombiesDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
+			self.drawSprite('ui_zombiesDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
 
 		self.drawSprite('ui_DDSelect', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/tablet.png')
 		self.objects['ui_DDSelect'].isRender = False
@@ -280,7 +285,12 @@ class GameplayScene():
 			self.selectDD(self.objects['ui_plantsDD4'], 'ui_plantsDD4')
 
 	def eventsZombies(self, event):
-		pass
+		if self.eventManager.checkOnClick(event, self.objects['ui_zombiesDD1']):
+			self.selectDD(self.objects['ui_zombiesDD1'], 'ui_zombiesDD1')
+		elif self.eventManager.checkOnClick(event, self.objects['ui_zombiesDD2']):
+			self.selectDD(self.objects['ui_zombiesDD2'], 'ui_zombiesDD2')
+		elif self.eventManager.checkOnClick(event, self.objects['ui_zombiesDD3']):
+			self.selectDD(self.objects['ui_zombiesDD3'], 'ui_zombiesDD3')
 
 	def eventsPaused(self, event):
 		# unpause button
