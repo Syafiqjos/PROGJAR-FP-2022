@@ -4,6 +4,8 @@ class Sprite():
 	def __init__(self, screen, position, scale, imageSrc):
 		super().__init__()
 
+		self.isRender = True
+
 		self.screen = screen # gameManager.screen
 		self.position = position # (x, y)
 		self.scale = scale # (x, x)
@@ -37,7 +39,8 @@ class Sprite():
 
 	def render(self):
 		self.update()
-		self.screen.blit(self.imageRender, (self.position[0], self.position[1]))
+		if self.isRender:
+			self.screen.blit(self.imageRender, (self.position[0], self.position[1]))
 
 		# Rect Debug
 		# pygame.draw.rect(self.screen, (0, 255, 0), self.rect)
