@@ -15,7 +15,7 @@ class GameplayScene():
 		self.dataManager = self.gameManager.dataManager
 		self.eventManager = self.gameManager.eventManager
 		self.screen = self.gameManager.screen
-		self.sprites = { 'ALL': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [] }
+		self.sprites = { 'ALL': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [], 'UI': [] }
 		self.objects = {}
 		self.isPaused = False
 
@@ -24,14 +24,15 @@ class GameplayScene():
 		self.awake()
 
 	def awake(self):
-		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'PAUSED'
+		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
 		self.awakeAll()
-		self.awakePaused()
 		if self.state == 'PLANTS':
 			self.awakePlants()
 		elif self.state == 'ZOMBIES':
 			self.awakeZombies()
+		self.awakeUI()
+		self.awakePaused()
 		
 	def awakeAll(self):
 		# Background
@@ -43,17 +44,18 @@ class GameplayScene():
 		# Zombie Deploy Tile
 		self.drawTileBatch('all_bgZombieDeployTile', 'ALL', (30 + 60 * 10, 140), (1, 5), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0077.png')
 
-		# Matahari UI
-		self.drawTileBatch('all_matahariUI', 'ALL', (10, 10), (1, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0054.png')
-
-		# Drag Drop UI
-		self.drawTileBatch('all_matahariUITile', 'ALL', (10 + 60, 10), (6, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
-		
-		# Pause Button
-		self.drawSprite('all_pauseButton', 'ALL', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
-
 		# Seluruh plants
 		# Seluruh zombies
+
+	def awakeUI(self):
+		# Matahari UI
+		self.drawTileBatch('ui_matahariUI', 'UI', (10, 10), (1, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0054.png')
+
+		# Drag Drop UI
+		self.drawTileBatch('ui_matahariUITile', 'UI', (10 + 60, 10), (6, 1), 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
+		
+		# Pause Button
+		self.drawSprite('ui_pauseButton', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
 
 	def awakePaused(self):
 		# Foreground paused UI
@@ -85,10 +87,6 @@ class GameplayScene():
 		self.sprites[state].append(self.objects[objName])
 
 	def eventsAll(self, event):
-		# pause button
-		if self.eventManager.checkOnClick(event, self.objects['all_pauseButton']):
-			self.pauseGame()
-
 		# bg tile
 		for i in range(0, 9): # x
 			for j in range(0, 5): # y
@@ -98,6 +96,11 @@ class GameplayScene():
 						self.sprites['ALL'].remove(self.objects[objectName])
 						del self.objects[objectName]
 						print('BG TILE :' + objectName)
+
+	def eventsUI(self, event):
+		# pause button
+		if self.eventManager.checkOnClick(event, self.objects['ui_pauseButton']):
+			self.pauseGame()
 
 	def eventsPlants(self, event):
 		for orb in self.plantsOrbs:
@@ -124,6 +127,7 @@ class GameplayScene():
 				self.eventsPaused(event)
 			else:
 				self.eventsAll(event)
+				self.eventsUI(event)
 				if self.state == 'PLANTS':
 					self.eventsPlants(event)
 				if self.state == 'ZOMBIES':
@@ -139,6 +143,8 @@ class GameplayScene():
 		if self.state == 'PLANTS':
 			for sprite in self.plantsOrbs:
 				sprite.render()
+		for sprite in self.sprites['UI']:
+			sprite.render()
 		if self.isPaused:
 			for sprite in self.sprites['PAUSED']:
 				sprite.render()
