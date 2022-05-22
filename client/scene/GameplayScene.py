@@ -113,9 +113,9 @@ class TumbuhanBuncisJago(Sprite):
 				self.plantsShootTimer = self.plantsShootTimerMax
 			self.shoot()
 
-class ZombieWalkerNormal(Sprite):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
+class ZombieWalker(Sprite):
+	def __init__(self, screen, position, scale, imagePath):
+		super().__init__(screen, position, scale, imagePath)
 
 	def awake(self):
 		self.healthTotal = 100
@@ -150,45 +150,29 @@ class ZombieWalkerNormal(Sprite):
 			self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
 			del self.scene.objects[self.spriteName]
 
-class ZombieWalkerJago(Sprite):
+class ZombieWalkerNormal(ZombieWalker):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
+
+	def awake(self):
+		self.healthTotal = 100
+		self.walkingSpeed = 0.25
+
+class ZombieWalkerJago(ZombieWalker):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
 
 	def awake(self):
-		self.healthTotal = 200
+		self.healthTotal = 250
 		self.walkingSpeed = 0.25
 
-	def setup(self, scene):
-		self.scene = scene
-
-	def update(self):
-		# walk to the left
-		# check if not out of bound on left yet
-		if self.position[0] > 10:
-			self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
-		else:
-			# eat brain and win the current lane
-			pass
-
-class ZombieWalkerHandal(Sprite):
+class ZombieWalkerHandal(ZombieWalker):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
 
 	def awake(self):
 		self.healthTotal = 500
 		self.walkingSpeed = 0.25
-
-	def setup(self, scene):
-		self.scene = scene
-
-	def update(self):
-		# walk to the left
-		# check if not out of bound on left yet
-		if self.position[0] > 10:
-			self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
-		else:
-			# eat brain and win the current lane
-			pass
 
 class GameplayScene():
 	def __init__(self, gameManager):
@@ -572,9 +556,9 @@ class GameplayScene():
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
 		elif ddName == 'ui_zombiesDD2':
 			sprite = ZombieWalkerJago(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
 		elif ddName == 'ui_zombiesDD3':
 			sprite = ZombieWalkerHandal(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
