@@ -121,17 +121,34 @@ class ZombieWalkerNormal(Sprite):
 		self.healthTotal = 100
 		self.walkingSpeed = 0.25
 
-	def setup(self, scene):
+	def setup(self, spriteName, scene):
+		self.spriteName = spriteName
 		self.scene = scene
 
 	def update(self):
-		# walk to the left
-		# check if not out of bound on left yet
-		if self.position[0] > 10:
+		# check got shoot by peluru tumbuhan
+		if self.collideWithBullet():
+			pass
+		# check if not out of bound on left yet then walk to the left
+		elif self.position[0] > 10:
 			self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
 		else:
 			# eat brain and win the current lane
 			pass
+
+	def collideWithBullet(self):
+		for bullet in self.scene.plantsBullets:
+			if self.rect.colliderect(bullet.rect):
+				self.healthTotal -= bullet.bulletDamage
+				bullet.destroy()
+
+		if self.healthTotal <= 0:
+			self.destroy()
+
+	def destroy(self):
+		if self.spriteName in self.scene.objects:
+			self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
+			del self.scene.objects[self.spriteName]
 
 class ZombieWalkerJago(Sprite):
 	def __init__(self, screen, position):
@@ -551,7 +568,7 @@ class GameplayScene():
 		spriteName = 'allzombies_zombiesDD:' + tileName
 		if ddName == 'ui_zombiesDD1':
 			sprite = ZombieWalkerNormal(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
 		elif ddName == 'ui_zombiesDD2':
 			sprite = ZombieWalkerJago(self.screen, tileObj.position)
