@@ -100,7 +100,10 @@ class GameplayScene():
 	def pickMatahari(self):
 		matahariCurrency = 25
 		currentCurrency = self.dataManager.get('gameplay_currency')
-		self.dataManager.set('gameplay_currency', currentCurrency + 25)
+		self.setCurrency(currentCurrency + 25)
+
+	def setCurrency(self, currency):
+		self.dataManager.set('gameplay_currency', currency)
 
 	def getCurrency(self):
 		return self.dataManager.get('gameplay_currency')
@@ -138,7 +141,9 @@ class GameplayScene():
 
 		if bgTilePressed and self.selectedDD != None:
 			print('Place DD of: ' + self.selectedDD + ' into ' + bgTilePressedName)
-			self.placeSelectedDD(bgTilePressedObj)
+			successPlacing = self.placeSelectedDD(bgTilePressedObj)
+			if not successPlacing:
+				print('No Money')
 			self.unselectDD()
 		elif self.selectedDD != None and self.eventManager.checkOnClickAny(event):
 			self.unselectDD()
@@ -238,4 +243,21 @@ class GameplayScene():
 		self.selectedDD = None
 
 	def placeSelectedDD(self, tileObj):
-		print('DD Placed.')
+		price = self.getPriceDD(self.selectedDD)
+		if price <= self.getCurrency():
+			self.setCurrency(self.getCurrency() - price)
+			print('DD Placed.')
+			return True
+		return False
+
+	def getPriceDD(self, ddName):
+		if ddName == 'ui_plantsDD1':
+			return 25
+		elif ddName == 'ui_plantsDD2':
+			return 100
+		elif ddName == 'ui_plantsDD3':
+			return 200
+		elif ddName == 'ui_plantsDD4':
+			return 0
+
+		return 1000000
