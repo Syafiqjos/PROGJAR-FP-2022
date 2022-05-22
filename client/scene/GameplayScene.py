@@ -117,6 +117,7 @@ class ZombieWalkerNormal(Sprite):
 		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
 
 	def awake(self):
+		self.healthTotal = 100
 		self.walkingSpeed = 1
 
 	def setup(self, scene):
