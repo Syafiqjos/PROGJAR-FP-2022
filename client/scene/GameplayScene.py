@@ -14,6 +14,28 @@ class MatahariOrb(Sprite):
 		if self.position[1] < self.stopFallPos:
 			self.setPosition((self.position[0], self.position[1] + 1))
 
+class TumbuhanMatahari(Sprite):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
+
+	def awake(self):
+		self.plantsMatahariTimerMax = 400
+		self.plantsMatahariTimer = self.plantsMatahariTimerMax
+
+	def setup(self, plantsSpawnMatahari):
+		self.plantsSpawnMatahari = plantsSpawnMatahari
+
+	def spawnMatahari(self):
+		matahari = self.plantsSpawnMatahari((self.position[0], self.position[1] - 10))
+		matahari.stopFallPos = self.position[1] + 10
+
+	def update(self):
+		if self.plantsMatahariTimer > 0:
+			self.plantsMatahariTimer -= 1
+		else:
+			self.plantsMatahariTimer = self.plantsMatahariTimerMax
+			self.spawnMatahari()
+
 class GameplayScene():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
@@ -92,7 +114,12 @@ class GameplayScene():
 
 	def plantsSpawnRandomMatahari(self):
 		posX = 20 + random.random() * (320 - 20)
-		self.plantsOrbs.append(MatahariOrb(self.screen, (posX, 0), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png'))
+		self.plantsSpawnMatahari((posX, 0))
+
+	def plantsSpawnMatahari(self, position):
+		sprite = MatahariOrb(self.screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
+		self.plantsOrbs.append(sprite)
+		return sprite
 
 	def resetCurrency(self):
 		self.dataManager.set('gameplay_currency', 0)
@@ -122,7 +149,7 @@ class GameplayScene():
 
 	def registerSprite(self, objName, state, sprite):
 		self.objects[objName] = sprite
-		self.sprites[state].append(self.objects[objName])
+		self.sprites[state].append(sprite)
 
 	def eventsAll(self, event):
 		bgTilePressed = False
@@ -272,7 +299,9 @@ class GameplayScene():
 
 	def placeDD(self, ddName, tileObj):
 		if ddName == 'ui_plantsDD1':
-			self.drawSprite('allplants_plantsDD1', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
+			sprite = TumbuhanMatahari(self.screen, tileObj.position)
+			sprite.setup(self.plantsSpawnMatahari)
+			self.registerSprite('allplants_plantsDD1', 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
 			self.drawSprite('allplants_plantsDD2', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
 		elif ddName == 'ui_plantsDD3':
