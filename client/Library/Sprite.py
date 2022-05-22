@@ -17,6 +17,8 @@ class Sprite():
 		self.setScale(self.scale)
 		self.setDirty()
 
+		self.awake()
+
 	def setPosition(self, pos):
 		self.position = pos
 		self.setDirty()
@@ -39,6 +41,9 @@ class Sprite():
 
 		# Rect Debug
 		# pygame.draw.rect(self.screen, (0, 255, 0), self.rect)
+
+	def awake(self):
+		pass
 
 	def update(self):
 		pass
