@@ -42,6 +42,9 @@ class GameplayScene():
 
 		# Drag Drop UI
 		self.drawTileBatch((10 + 60, 10), (6, 1), 'all_matahariUITile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
+		
+		# Pause Button
+		self.drawSprite('all_pauseButton', 'ALL', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
 
 		# Seluruh plants
 		# Seluruh zombies
@@ -67,6 +70,10 @@ class GameplayScene():
 				posY = tilePivot[1] + j * tileSize
 				self.objects[objName] = Sprite(self.screen, (posX, posY), (tileScale, tileScale), imagePath)
 				self.sprites['ALL'].append(self.objects[objName])
+
+	def drawSprite(self, objName, state, pos, scale, imagePath):
+		self.objects[objName] = Sprite(self.screen, (pos[0], pos[1]), (scale[0], scale[1]), imagePath)
+		self.sprites[state].append(self.objects[objName])
 
 	def eventsAll(self, event):
 		# bg tile
