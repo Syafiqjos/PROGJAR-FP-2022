@@ -4,6 +4,7 @@ sys.path.append('..')
 from Library.Sprite import Sprite
 
 import pygame
+import random
 
 class MatahariOrb(Sprite):
 	def update(self):
@@ -20,6 +21,8 @@ class GameplayScene():
 		self.isPaused = False
 
 		self.plantsOrbs = []
+		self.plantsMatahariTimerMax = 200
+		self.plantsMatahariTimer = self.plantsMatahariTimerMax
 
 		self.awake()
 
@@ -64,14 +67,15 @@ class GameplayScene():
 		self.drawSprite('paused_disconnectButton', 'PAUSED', (120, 240), (1, 1), 'Assets/gameicons/PNG/White/1x/door.png')
 
 	def awakePlants(self):
-		state = 'PLANTS'
-
-		# Matahari Plants
-		self.plantsOrbs.append(MatahariOrb(self.screen, (10, 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png'))
+		self.plantsSpawnRandomMatahari()
 
 	def awakeZombies(self):
 		# Matahari Zombies
 		pass
+
+	def plantsSpawnRandomMatahari(self):
+		posX = 20 + random.random() * (320 - 20)
+		self.plantsOrbs.append(MatahariOrb(self.screen, (posX, 0), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png'))
 
 	def drawTileBatch(self, objectNamespace, state, pivot, length, tileSize, tileScale, imagePath):
 		tilePivot = pivot
@@ -134,6 +138,7 @@ class GameplayScene():
 					self.eventsZombies(event)
 
 	def render(self):
+		self.update()
 		self.screen.fill((0, 0, 0))
 		
 		for sprite in self.sprites['ALL']:
@@ -148,6 +153,17 @@ class GameplayScene():
 		if self.isPaused:
 			for sprite in self.sprites['PAUSED']:
 				sprite.render()
+
+	def update(self):
+		if self.state == 'PLANTS':
+			self.updatePlants()
+
+	def updatePlants(self):
+		if self.plantsMatahariTimer > 0:
+			self.plantsMatahariTimer -= 1
+		else:
+			self.plantsMatahariTimer = self.plantsMatahariTimerMax
+			self.plantsSpawnRandomMatahari()
 
 	def pauseGame(self):
 		self.isPaused = True
