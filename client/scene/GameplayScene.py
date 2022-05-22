@@ -137,7 +137,7 @@ class GameplayScene():
 		self.awake()
 
 	def awake(self):
-		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
+		self.state = 'ZOMBIES' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
 		self.resetCurrency()
 
@@ -401,6 +401,8 @@ class GameplayScene():
 	def placeSelectedDD(self, tileName, tileObj):
 		if self.state == 'PLANTS':
 			return self.plantsPlaceSelectedDD(tileName, tileObj)
+		elif self.state == 'ZOMBIES':
+			return self.zombiesPlaceSelectedDD(tileName, tileObj)
 		return None
 
 	def plantsPlaceSelectedDD(self, tileName, tileObj):
@@ -416,9 +418,21 @@ class GameplayScene():
 		print('DD Placed.')
 		return None
 
+	def zombiesPlaceSelectedDD(self, tileName, tileObj):
+		price = self.getPriceDD(self.selectedDD)
+		occupiedName = 'allzombies_zombiesDD:' + tileName
+		if price > self.getCurrency():
+			return 'NOMONEY'
+		self.setCurrency(self.getCurrency() - price)
+		self.placeDD(self.selectedDD, tileName, tileObj)
+		print('DD Placed.')
+		return None
+
 	def getPriceDD(self, ddName):
 		if self.state == 'PLANTS':
 			return self.plantsGetPriceDD(ddName)
+		elif self.state == 'ZOMBIES':
+			return self.zombiesGetPriceDD(ddName)
 
 		return 1000000
 
@@ -434,9 +448,21 @@ class GameplayScene():
 
 		return 1000000
 
+	def zombiesGetPriceDD(self, ddName):
+		if ddName == 'ui_zombiesDD1':
+			return 50
+		elif ddName == 'ui_zombiesDD2':
+			return 100
+		elif ddName == 'ui_zombiesDD3':
+			return 200
+
+		return 1000000
+
 	def placeDD(self, ddName, tileName, tileObj):
 		if self.state == 'PLANTS':
 			self.plantsPlaceDD(ddName, tileName, tileObj)
+		elif self.state == 'ZOMBIES':
+			self.zombiesPlaceDD(ddName, tileName, tileObj)
 
 	def plantsPlaceDD(self, ddName, tileName, tileObj):
 		spriteName = 'allplants_plantsDD:' + tileName
@@ -456,3 +482,18 @@ class GameplayScene():
 			if spriteName in self.objects:
 				self.sprites['ALLPLANTS'].remove(self.objects[spriteName])
 				del self.objects[spriteName]
+
+	def zombiesPlaceDD(self, ddName, tileName, tileObj):
+		spriteName = 'allzombies_zombiesDD:' + tileName
+		if ddName == 'ui_zombiesDD1':
+			sprite = TumbuhanMatahari(self.screen, tileObj.position)
+			sprite.setup(self)
+			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+		elif ddName == 'ui_zombiesDD2':
+			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
+			sprite.setup(self)
+			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+		elif ddName == 'ui_zombiesDD3':
+			sprite = TumbuhanBuncisJago(self.screen, tileObj.position)
+			sprite.setup(self)
+			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
