@@ -29,19 +29,20 @@ class GameplayScene():
 		
 	def awakeAll(self):
 		# Background
-		tilePivot = (60, 140)
-		for i in range(0, 10): # x
-			for j in range(0, 5): # y
-				objName = 'all_bgTile' + str(i) + 'x' + str(j)
-				tileSize = 60
-				tileScale = 3
-				posX = tilePivot[0] + i * tileSize
-				posY = tilePivot[1] + j * tileSize
-				self.objects[objName] = Sprite(self.screen, (posX, posY), (tileScale, tileScale), 'Assets/kenney_pixelshmup/Tiles/tile_0110.png')
-				self.sprites['ALL'].append(self.objects[objName])
+		self.drawTileBatch((30 + 60, 140), (10, 5), 'all_bgTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0110.png')
+
+		# Plant Greaser Tile
+		self.drawTileBatch((30 + 0, 140), (1, 5), 'all_bgPlantGreaserTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0076.png')
+
+		# Zombie Deploy Tile
+		self.drawTileBatch((30 + 60 * 10, 140), (1, 5), 'all_bgZombieDeployTile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0077.png')
 
 		# Matahari UI
+		self.drawTileBatch((10, 10), (1, 1), 'all_matahariUI', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0054.png')
+
 		# Drag Drop UI
+		self.drawTileBatch((10 + 60, 10), (6, 1), 'all_matahariUITile', 60, 3, 'Assets/kenney_pixelshmup/Tiles/tile_0044.png')
+
 		# Seluruh plants
 		# Seluruh zombies
 
@@ -56,6 +57,16 @@ class GameplayScene():
 	def awakeZombies(self):
 		# Matahari Zombies
 		pass
+
+	def drawTileBatch(self, pivot, length, objectNamespace, tileSize, tileScale, imagePath):
+		tilePivot = pivot
+		for i in range(0, length[0]): # x
+			for j in range(0, length[1]): # y
+				objName = objectNamespace + str(i) + 'x' + str(j)
+				posX = tilePivot[0] + i * tileSize
+				posY = tilePivot[1] + j * tileSize
+				self.objects[objName] = Sprite(self.screen, (posX, posY), (tileScale, tileScale), imagePath)
+				self.sprites['ALL'].append(self.objects[objName])
 
 	def eventsAll(self, event):
 		pass
