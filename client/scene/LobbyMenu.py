@@ -45,28 +45,37 @@ class LobbyMenu():
 		state = 'JOIN'
 		self.sprites[state].append(self.objects['join_backHomeButton'])
 
+	def eventsHome(self, event):
+		if self.eventManager.checkOnClick(event, self.objects['home_createRoomButton']):
+			print('create room')
+			self.goToCreateRoom()
+		elif self.eventManager.checkOnClick(event, self.objects['home_joinRoomButton']):
+			print('join room')
+			self.goToJoinRoom()
+		elif self.eventManager.checkOnClick(event, self.objects['home_backMainMenuButton']):
+			print('go main menu')
+			self.goToMainMenu()
+
+	def eventsCreate(self, event):
+		if self.eventManager.checkOnClick(event, self.objects['create_backHomeButton']):
+			print('home room')
+			self.goToHome()
+
+	def eventsJoin(self, event):
+		if self.eventManager.checkOnClick(event, self.objects['join_backHomeButton']):
+			print('home room')
+			self.goToHome()
+
 	def events(self):
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				self.gameManager.running = False
 			if self.state == 'HOME':
-				if self.eventManager.checkOnClick(event, self.objects['home_createRoomButton']):
-					print('create room')
-					self.goToCreateRoom()
-				elif self.eventManager.checkOnClick(event, self.objects['home_joinRoomButton']):
-					print('join room')
-					self.goToJoinRoom()
-				elif self.eventManager.checkOnClick(event, self.objects['home_backMainMenuButton']):
-					print('go main menu')
-					self.goToMainMenu()
+				self.eventsHome(event)
 			elif self.state == 'CREATE':
-				if self.eventManager.checkOnClick(event, self.objects['create_backHomeButton']):
-					print('home room')
-					self.goToHome()
+				self.eventsCreate(event)
 			elif self.state == 'JOIN':
-				if self.eventManager.checkOnClick(event, self.objects['join_backHomeButton']):
-					print('home room')
-					self.goToHome()
+				self.eventsJoin(event)
 
 	def render(self):
 		self.screen.fill((0, 0, 0))
