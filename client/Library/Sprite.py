@@ -13,6 +13,8 @@ class Sprite():
 		self.imageRender = self.imageRenderOriginal
 		self.rect = self.imageRender.get_rect()
 
+		self.setPosition(self.position)
+		self.setScale(self.scale)
 		self.setDirty()
 
 	def setPosition(self, pos):
@@ -29,7 +31,10 @@ class Sprite():
 		transform = (int(width), int(height))
 		self.imageRender = pygame.transform.scale(self.imageRender, transform)
 		self.rect = self.imageRender.get_rect()
+		self.rect = self.rect.move(self.position[0], self.position[1])
 
 	def render(self):
 		self.screen.blit(self.imageRender, (self.position[0], self.position[1]))
-		pygame.draw.rect(self.screen, (0, 255, 0), self.rect)
+
+		# Rect Debug
+		# pygame.draw.rect(self.screen, (0, 255, 0), self.rect)
