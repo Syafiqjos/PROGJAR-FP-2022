@@ -33,6 +33,8 @@ class GameplayScene():
 	def awake(self):
 		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
+		self.resetCurrency()
+
 		self.awakeAll()
 		if self.state == 'PLANTS':
 			self.awakePlants()
@@ -81,6 +83,17 @@ class GameplayScene():
 		posX = 20 + random.random() * (320 - 20)
 		self.plantsOrbs.append(MatahariOrb(self.screen, (posX, 0), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png'))
 
+	def resetCurrency(self):
+		self.dataManager.set('gameplay_currency', 0)
+
+	def pickMatahari(self):
+		matahariCurrency = 25
+		currentCurrency = self.dataManager.get('gameplay_currency')
+		self.dataManager.set('gameplay_currency', currentCurrency + 25)
+
+	def getCurrency(self):
+		return self.dataManager.get('gameplay_currency')
+
 	def drawTileBatch(self, objectNamespace, state, pivot, length, tileSize, tileScale, imagePath):
 		tilePivot = pivot
 		for i in range(0, length[0]): # x
@@ -114,7 +127,8 @@ class GameplayScene():
 		for orb in self.plantsOrbs:
 			if self.eventManager.checkOnClick(event, orb):
 				self.plantsOrbs.remove(orb)
-				print('PLANTS ORB OBTAINED')
+				self.pickMatahari()
+				print('PLANTS ORB OBTAINED, CURRENCY: ' + str(self.getCurrency()))
 
 	def eventsZombies(self, event):
 		pass
