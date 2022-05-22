@@ -23,6 +23,7 @@ class PeluruBuncis(Sprite):
 
 	def awake(self):
 		self.bulletSpeed = 2
+		self.bulletDamage = 25
 
 	def setup(self, scene):
 		self.scene = scene
