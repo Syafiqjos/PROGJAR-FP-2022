@@ -20,6 +20,8 @@ class LobbyMenu():
 		self.state = 'HOME' # 'CREATE', 'JOIN'
 
 		self.awakeHome()
+		self.awakeCreate()
+		self.awakeJoin()
 		
 	def awakeHome(self):
 		self.objects['home_backMainMenuButton'] = Sprite(self.screen, (100, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/home.png')
@@ -30,6 +32,18 @@ class LobbyMenu():
 		self.sprites[state].append(self.objects['home_backMainMenuButton'])
 		self.sprites[state].append(self.objects['home_createRoomButton'])
 		self.sprites[state].append(self.objects['home_joinRoomButton'])
+
+	def awakeCreate(self):
+		self.objects['create_backHomeButton'] = Sprite(self.screen, (100, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/home.png')
+
+		state = 'CREATE'
+		self.sprites[state].append(self.objects['create_backHomeButton'])
+
+	def awakeJoin(self):
+		self.objects['join_backHomeButton'] = Sprite(self.screen, (100, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/home.png')
+
+		state = 'JOIN'
+		self.sprites[state].append(self.objects['join_backHomeButton'])
 
 	def events(self):
 		for event in pygame.event.get():
@@ -45,6 +59,14 @@ class LobbyMenu():
 				elif self.eventManager.checkOnClick(event, self.objects['home_backMainMenuButton']):
 					print('go main menu')
 					self.goToMainMenu()
+			elif self.state == 'CREATE':
+				if self.eventManager.checkOnClick(event, self.objects['create_backHomeButton']):
+					print('home room')
+					self.goToHome()
+			elif self.state == 'JOIN':
+				if self.eventManager.checkOnClick(event, self.objects['join_backHomeButton']):
+					print('home room')
+					self.goToHome()
 
 	def render(self):
 		self.screen.fill((0, 0, 0))
