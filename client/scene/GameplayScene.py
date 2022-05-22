@@ -49,6 +49,28 @@ class TumbuhanMatahari(Sprite):
 			self.plantsMatahariTimer = self.plantsMatahariTimerMax
 			self.spawnMatahari()
 
+class TumbuhanBuncisNormal(Sprite):
+	def __init__(self, screen, position):
+		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
+
+	def awake(self):
+		self.plantsShootTimerMax = 200
+		self.plantsShootTimer = self.plantsShootTimerMax
+
+	def setup(self, scene):
+		self.scene = scene
+
+	def shoot(self):
+		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+		self.scene.plantsBullets.append(bullet)
+
+	def update(self):
+		if self.plantsShootTimer > 0:
+			self.plantsShootTimer -= 1
+		else:
+			self.plantsShootTimer = self.plantsShootTimerMax
+			self.shoot()
+
 class GameplayScene():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
@@ -62,6 +84,8 @@ class GameplayScene():
 		self.plantsOrbs = []
 		self.plantsMatahariTimerMax = 200
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
+
+		self.plantsBullets = []
 
 		self.selectedDD = None
 
@@ -251,6 +275,8 @@ class GameplayScene():
 			sprite.render()
 		for sprite in self.sprites[self.state]:
 			sprite.render()
+		for sprite in self.plantsBullets:
+			sprite.render()
 		if self.state == 'PLANTS':
 			for sprite in self.plantsOrbs:
 				sprite.render()
@@ -323,7 +349,9 @@ class GameplayScene():
 			sprite.setup(self.plantsSpawnMatahari)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
-			self.drawSprite('allplants_plantsDD2', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
+			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
+			sprite.setup(self)
+			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD3':
 			self.drawSprite('allplants_plantsDD3', 'ALLPLANTS', tileObj.position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
 		elif ddName == 'ui_plantsDD4':
