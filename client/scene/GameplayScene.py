@@ -75,6 +75,10 @@ class GameplayScene():
 		self.sprites[state].append(self.objects[objName])
 
 	def eventsAll(self, event):
+		# pause button
+		if self.eventManager.checkOnClick(event, self.objects['all_pauseButton']):
+			self.pauseGame()
+
 		# bg tile
 		for i in range(0, 9): # x
 			for j in range(0, 5): # y
