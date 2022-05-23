@@ -200,6 +200,9 @@ class GameplayScene():
 		self.objects = {}
 		self.isPaused = False
 
+		# waktu
+		self.clock = pygame.time.Clock()
+
 		self.plantsOrbs = []
 		self.plantsMatahariTimerMax = 200
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
@@ -264,6 +267,7 @@ class GameplayScene():
 		
 		# Pause Button
 		self.drawSprite('ui_pauseButton', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/pause.png')
+
 
 	def awakePaused(self):
 		# Foreground paused UI
