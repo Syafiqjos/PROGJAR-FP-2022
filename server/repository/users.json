@@ -1,0 +1,7 @@
+{
+  "description": "Users data",
+  "users": [
+    { "email": "enzoiqbal@gmail.com", "password": "123456" },
+    { "email": "hernowo@gmail.com", "password": "123456" }
+  ]
+}
