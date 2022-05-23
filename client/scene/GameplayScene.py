@@ -12,10 +12,26 @@ class MatahariOrb(Sprite):
 
 	def awake(self):
 		self.stopFallPos = 100 + random.random() * 300
+		self.destroyTimer = 500
+
+	def setup(self, scene):
+		self.scene = scene
 
 	def update(self):
 		if self.position[1] < self.stopFallPos:
 			self.setPosition((self.position[0], self.position[1] + 1))
+		if self.destroyTimer > 0:
+			self.destroyTimer -= 1
+		else:
+			self.destroy()
+
+	def destroy(self):
+		if self in self.scene.plantsOrbs:
+			self.scene.plantsOrbs.remove(self)
+			del self
+		if self in self.scene.zombiesOrbs:
+			self.scene.zombiesOrbs.remove(self)
+			del self
 
 class PeluruBuncis(Sprite):
 	def __init__(self, screen, position):
@@ -270,6 +286,7 @@ class GameplayScene():
 
 	def plantsSpawnMatahari(self, position):
 		sprite = MatahariOrb(self.screen, position)
+		sprite.setup(self)
 		self.plantsOrbs.append(sprite)
 		return sprite
 
@@ -279,6 +296,7 @@ class GameplayScene():
 
 	def zombiesSpawnMatahari(self, position):
 		sprite = MatahariOrb(self.screen, position)
+		sprite.setup(self)
 		self.zombiesOrbs.append(sprite)
 		return sprite
 
