@@ -11,7 +11,7 @@ class MatahariOrb(Sprite):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
 
 	def awake(self):
-		self.stopFallPos = 100 + random.random() * 300
+		self.stopFallPos = 120 + random.random() * 290
 		self.destroyTimer = 500
 
 	def setup(self, scene):
