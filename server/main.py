@@ -9,6 +9,7 @@ from utils.game import find, cancel_find
 PORT = 8080
 BACKLOG = socket.SOMAXCONN
 BUFF_SIZE = 2048
+SELECT_TIMEOUT = 1
 AVAILABLE_ACTIONS = [
     'register',
     'login',
@@ -27,7 +28,7 @@ if __name__ == '__main__':
 
     while True:
         print('(main) Waiting for ready sockets...')
-        rlist, wlist, xlist = select.select(connections, [], [])
+        rlist, wlist, xlist = select.select(connections, [], [], SELECT_TIMEOUT)
         for ready_socket in rlist:
             if ready_socket == server:
                 print('(main) New client connected!!\n')
