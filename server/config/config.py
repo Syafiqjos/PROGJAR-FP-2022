@@ -7,12 +7,12 @@ BUFF_SIZE = 2048
 PORT = 8080
 BACKLOG = socket.SOMAXCONN
 SELECT_TIMEOUT = 0.5
-AVAILABLE_ACTIONS = [
-    "register",
-    "login",
-    "find_match",
-    "cancel_find_match",
-]
+AVAILABLE_ACTIONS = {
+    "register": None,
+    "login": None,
+    "find_match": None,
+    "cancel_find_match": None,
+}
 email = ""
 password = ""
 
