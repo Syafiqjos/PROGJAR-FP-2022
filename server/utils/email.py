@@ -1,3 +1,4 @@
+import os
 import config
 import smtplib
 
@@ -11,7 +12,10 @@ def initialize_email_service():
     password = config.get_password()
 
     print("Login to email service...")
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    server = smtplib.SMTP_SSL(
+        os.getenv("EMAIL_HOST"), int(os.getenv("EMAIL_HOST_PORT"))
+    )
+    server.ehlo()
     server.login(username, password)
 
 
