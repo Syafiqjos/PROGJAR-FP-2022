@@ -16,6 +16,11 @@ if __name__ == "__main__":
     zombie_queue = []
     plant_queue = []
 
+    config.AVAILABLE_ACTIONS["register"] = controllers.register
+    config.AVAILABLE_ACTIONS["login"] = controllers.login
+    config.AVAILABLE_ACTIONS["find_match"] = controllers.find_match
+    config.AVAILABLE_ACTIONS["cancel_find_match"] = controllers.cancel_find_match
+
     server = utils.socket.start_server(config.PORT, config.BACKLOG)
     connections.append(server)
     print(f"Server started on port {config.PORT}!\n")
@@ -36,7 +41,6 @@ if __name__ == "__main__":
             # Accept trigger from client
             raw = ready_socket.recv(config.BUFF_SIZE)
             if not raw:
-                # Client has disconnected
                 print("Client disconnected :(\n")
                 connections.remove(ready_socket)
                 continue
@@ -46,31 +50,21 @@ if __name__ == "__main__":
             request = data.get("request", "")
 
             if request not in config.AVAILABLE_ACTIONS:
-                print("Invalid request!\n")
-                send(ready_socket, {"error": "Invalid request!"})
+                send(ready_socket, {"error": "Unknown request!"})
                 continue
 
             # Call handler
             try:
-                if request == "register":
-                    controllers.register(ready_socket, data)
-                if request == "login":
-                    controllers.login(ready_socket, data)
-                if request == "find":
-                    controllers.find_match(
-                        ready_socket,
-                        data.get("role"),
-                        connections,
-                        plant_queue,
-                        zombie_queue,
-                    )
-                if request == "cancel":
-                    controllers.cancel_find_match()
-            except (AppError, Exception) as e:
+                config.AVAILABLE_ACTIONS[request](
+                    client=ready_socket,
+                    data=data,
+                    connections=connections,
+                    plant_queue=plant_queue,
+                    zombie_queue=zombie_queue,
+                )
+            except AppError as e:
                 traceback.print_exc()
-                e = e.__dict__
-                data = {
-                    "error": e.get("message", "Error"),
-                    "code": e.get("status_code", 500),
-                }
-                send(ready_socket, data)
+                send(ready_socket, e.payload)
+            except Exception as e:
+                traceback.print_exc()
+                send(ready_socket, {"error": "Internal server error"})

@@ -3,18 +3,20 @@ import socket
 
 
 def find_match(
-    player: socket.socket,
+    client: socket.socket,
     role: str,
     connections: list,
     plant_queue: list,
     zombie_queue: list,
+    *args,
+    **kwargs
 ):
     if role != "plant" or role != "zombie":
         # TODO: handle invalid role
         return
 
     queue = {"plant": plant_queue, "zombie": zombie_queue}
-    queue[role].append(player)
+    queue[role].append(client)
 
     if len(plant_queue) > 0 and len(zombie_queue) > 0:
         plant: socket.socket = plant_queue.pop(0)

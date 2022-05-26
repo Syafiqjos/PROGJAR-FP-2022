@@ -1,2 +1,2 @@
-def cancel_find_match():
+def cancel_find_match(*args, **kwargs):
     return
