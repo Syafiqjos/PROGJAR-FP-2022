@@ -33,7 +33,7 @@
 
 ## Flow finding match:
 
-1. client -> `sock.send({ request: "find", role: "zombie", token: "eyada.adasd.qweq" })`
+1. client -> `sock.send({ request: "find_match", role: "zombie", token: "eyada.adasd.qweq" })`
 2. server -> bakal notify apakah ditolak / perlu waiting / udah ketemu lawan
 3. client -> `sock.recv()`
    - success
