@@ -35,5 +35,7 @@ def register(client: socket.socket = None, data: dict = {}, *args, **kwargs):
     with open(users_repo, "w") as f:
         f.write(json.dumps(repo))
 
-    utils.email.send_email(email, "This is = {}".format(password))
+    subject = "Your PvZ account password"
+    content = "Here is the password: {}".format(password)
+    utils.email.send_email(email, subject=subject, content=content)
     send(client, {"success": True, "message": "Check email for your password"})

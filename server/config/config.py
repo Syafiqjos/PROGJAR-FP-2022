@@ -22,7 +22,7 @@ def init():
 
     dotenv.load_dotenv()
     email = os.getenv("EMAIL")
-    password = os.getenv("PASSWORD")
+    password = os.getenv("EMAIL_PASSWORD")
 
     utils.email.initialize_email_service()
 
