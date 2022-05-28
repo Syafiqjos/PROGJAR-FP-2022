@@ -57,6 +57,7 @@ class PeluruBuncis(Sprite):
 class TumbuhanMatahari(Sprite):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
+		self.type = 'plants_sunflower'
 
 	def awake(self):
 		self.plantsMatahariTimerMax = 400
@@ -80,6 +81,7 @@ class TumbuhanMatahari(Sprite):
 class TumbuhanBuncisNormal(Sprite):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
+		self.type = 'plants_pea'
 
 	def awake(self):
 		self.plantsShootTimerMax = 200
@@ -104,6 +106,7 @@ class TumbuhanBuncisNormal(Sprite):
 class TumbuhanBuncisJago(Sprite):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
+		self.type = 'plants_repeater'
 
 	def awake(self):
 		self.plantsShootTimerMax = 200
@@ -171,6 +174,7 @@ class ZombieWalker(Sprite):
 class ZombieWalkerNormal(ZombieWalker):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
+		self.type = 'zombies_normal'
 
 	def awake(self):
 		self.healthTotal = 100
@@ -179,6 +183,7 @@ class ZombieWalkerNormal(ZombieWalker):
 class ZombieWalkerJago(ZombieWalker):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
+		self.type = 'zombies_cone'
 
 	def awake(self):
 		self.healthTotal = 250
@@ -187,6 +192,7 @@ class ZombieWalkerJago(ZombieWalker):
 class ZombieWalkerHandal(ZombieWalker):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
+		self.type = 'zombies_bucket'
 
 	def awake(self):
 		self.healthTotal = 500
