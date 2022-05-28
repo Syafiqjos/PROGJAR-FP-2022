@@ -74,7 +74,7 @@ Nanti di awal game:
             }
         - saat tanaman mati
             {
-                event: "on_plant_move",
+                event: "on_plant_die",
                 plant: {
                     id: "unique"
                 }
