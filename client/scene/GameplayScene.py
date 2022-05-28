@@ -85,7 +85,8 @@ class TumbuhanBuncisNormal(Sprite):
 		self.plantsShootTimerMax = 200
 		self.plantsShootTimer = self.plantsShootTimerMax
 
-	def setup(self, scene):
+	def setup(self, spriteName, scene):
+		self.spriteName = spriteName
 		self.scene = scene
 
 	def shoot(self):
@@ -110,7 +111,8 @@ class TumbuhanBuncisJago(Sprite):
 		self.plantsShootCount = 0
 		self.plantsShootTimer = self.plantsShootTimerMax
 
-	def setup(self, scene):
+	def setup(self, spriteName, scene):
+		self.spriteName = spriteName
 		self.scene = scene
 
 	def shoot(self):
@@ -559,11 +561,11 @@ class GameplayScene():
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
 			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD3':
 			sprite = TumbuhanBuncisJago(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD4':
 			if spriteName in self.objects:
