@@ -2,6 +2,7 @@ import os
 import socket
 import json
 import utils
+import bcrypt
 from utils.error import AppError
 from utils.socket import send
 
@@ -25,10 +26,11 @@ def register(client: socket.socket = None, data: dict = {}, *args, **kwargs):
         raise AppError("Email is already registered!")
 
     password = utils.random.random_string(password_length)
+    hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     repo["users"].append(
         {
             "email": email,
-            "password": password,
+            "password": hashed_password,
         }
     )
 
