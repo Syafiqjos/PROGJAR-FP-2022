@@ -11,7 +11,7 @@ from utils.socket import send
 connections = []
 
 
-if __name__ == "__main__":
+def main():
     config.init()
     zombie_queue = []
     plant_queue = []
@@ -68,3 +68,7 @@ if __name__ == "__main__":
             except Exception as e:
                 traceback.print_exc()
                 send(ready_socket, {"error": "Internal server error"})
+
+
+if __name__ == "__main__":
+    main()
