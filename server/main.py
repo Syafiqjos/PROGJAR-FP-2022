@@ -16,10 +16,12 @@ def main():
     zombie_queue = []
     plant_queue = []
 
-    config.AVAILABLE_ACTIONS["register"] = controllers.register
-    config.AVAILABLE_ACTIONS["login"] = controllers.login
-    config.AVAILABLE_ACTIONS["find_match"] = controllers.find_match
-    config.AVAILABLE_ACTIONS["cancel_find_match"] = controllers.cancel_find_match
+    available_actions = {
+        config.actions.LOGIN: controllers.login,
+        config.actions.REGISTER: controllers.register,
+        config.actions.FIND_MATCH: controllers.find_match,
+        config.actions.CANCEL_FIND_MATCH: controllers.cancel_find_match,
+    }
 
     server = utils.socket.start_server(config.PORT, config.BACKLOG)
     connections.append(server)
@@ -49,13 +51,14 @@ def main():
             data = json.loads(raw)
             request = data.get("request", "")
 
-            if request not in config.AVAILABLE_ACTIONS:
+            if request not in available_actions:
                 send(ready_socket, {"error": "Unknown request!"})
                 continue
 
             # Call handler
             try:
-                config.AVAILABLE_ACTIONS[request](
+                handler = available_actions[request]
+                handler(
                     client=ready_socket,
                     data=data,
                     connections=connections,
