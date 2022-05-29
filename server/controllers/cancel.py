@@ -1,4 +1,5 @@
 import socket
+from utils.socket import send
 
 
 def cancel_find_match(
@@ -8,3 +9,5 @@ def cancel_find_match(
         plant_queue.remove(client)
     if client in zombie_queue:
         zombie_queue.remove(client)
+
+    send(client, {"success": True})
