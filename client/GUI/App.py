@@ -3,10 +3,44 @@ import tkinter as tk
 import sys
 sys.path.append('..')
 
+root_original = None
+root = None
+
 dataManager = None
 socketManager = None
 accountSocket = None
 gameSocket = None
+
+def on_login_success(res):
+	dataManager.set('user_email', res['email_input'])
+	dataManager.set('user_password', res['password_input'])
+	dataManager.set('user_token', res['token'])
+
+	root_original.quit()
+
+def on_login_user_not_found(res):
+	print('User not found!')
+
+def on_login_invalid_password(res):
+	print('User Password wrong!')
+
+def on_login_email_and_password_empty(res):
+	print('Email and password are empty')
+
+def on_login_error(res):
+	print(res['message'])
+
+def on_login(res):
+	if res['success'] == True:
+		on_login_success(res)
+	elif res['message'] == 'Email and password are required!':
+		on_login_email_and_password_empty(res)
+	elif res['message'] == 'Email is not registered!':
+		on_login_user_not_found(res)
+	elif res['message'] == 'Wrong password!':
+		on_login_invalid_password(res)
+	else:
+		on_login_error(res)
 
 def try_login(entries):
 	email_input = entries['Email'].get()
@@ -16,7 +50,11 @@ def try_login(entries):
 
 	if accountSocket != None:
 		res = accountSocket.sendAccountLoginEvent(email_input, password_input)
+		res['email_input'] = email_input
+		res['password_input'] = password_input
+
 		print(res)
+		on_login(res)
 
 def try_register(entries):
 	email_input = entries['Email'].get()
@@ -87,6 +125,9 @@ def make_register_window(root):
 	return ents
 
 def app(m_dataManager, m_socketManager = None, m_accountSocket = None, m_gameSocket = None):
+	global root_original
+	global root
+
 	global dataManager
 	global socketManager
 	global accountSocket
@@ -103,6 +144,6 @@ def app(m_dataManager, m_socketManager = None, m_accountSocket = None, m_gameSoc
 	root_original = tk.Tk()
 	root = tk.Frame(root_original)
 	root.pack(side = tk.LEFT)
-	ents = make_register_window(root)
+	ents = make_login_window(root)
 
 	root.mainloop()
