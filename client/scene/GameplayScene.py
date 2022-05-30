@@ -54,16 +54,40 @@ class PeluruBuncis(Sprite):
 			self.scene.plantsBullets.remove(self)
 			del self
 
-class TumbuhanKentang(Sprite):
+class Tumbuhan(Sprite):
+	def __init__(self, screen, position, scale, imagePath):
+		super().__init__(screen, position, scale, imagePath)
+		self.healthTotal = 100
+
+	def update(self):
+		if self.collideWithZombie():
+			pass
+
+	def collideWithZombie(self):
+		for zombie in self.scene.sprites['ALLZOMBIES']:
+			if self.rect.colliderect(zombie.rect):
+				self.healthTotal -= zombie.eatingRate
+
+		if self.healthTotal <= 0:
+			self.destroy()
+
+	def destroy(self):
+		if self.spriteName in self.scene.objects:
+			self.scene.sprites['ALLPLANTS'].remove(self.scene.objects[self.spriteName])
+			del self.scene.objects[self.spriteName]
+
+class TumbuhanKentang(Tumbuhan):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
 		self.type = 'plants_potato'
 
 	def awake(self):
+		super().awake()
 		self.plantsMatahariTimerMax = 400
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
 
-	def setup(self, scene):
+	def setup(self, spriteName, scene):
+		self.spriteName = spriteName
 		self.scene = scene
 		self.plantsSpawnMatahari = self.scene.plantsSpawnMatahari
 
@@ -72,18 +96,20 @@ class TumbuhanKentang(Sprite):
 		matahari.stopFallPos = self.position[1] + 10
 
 	def update(self):
+		super().update()
 		if self.plantsMatahariTimer > 0:
 			self.plantsMatahariTimer -= 1
 		else:
 			self.plantsMatahariTimer = self.plantsMatahariTimerMax
 			# self.spawnMatahari()
 
-class TumbuhanBuncisNormal(Sprite):
+class TumbuhanBuncisNormal(Tumbuhan):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
 		self.type = 'plants_pea'
 
 	def awake(self):
+		super().awake()
 		self.plantsShootTimerMax = 200
 		self.plantsShootTimer = self.plantsShootTimerMax
 
@@ -97,18 +123,20 @@ class TumbuhanBuncisNormal(Sprite):
 		self.scene.plantsBullets.append(bullet)
 
 	def update(self):
+		super().update()
 		if self.plantsShootTimer > 0:
 			self.plantsShootTimer -= 1
 		else:
 			self.plantsShootTimer = self.plantsShootTimerMax
 			self.shoot()
 
-class TumbuhanBuncisJago(Sprite):
+class TumbuhanBuncisJago(Tumbuhan):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
 		self.type = 'plants_repeater'
 
 	def awake(self):
+		super().awake()
 		self.plantsShootTimerMax = 200
 		self.plantsShootTimerMaxShort = 25
 		self.plantsShootCount = 0
@@ -125,6 +153,7 @@ class TumbuhanBuncisJago(Sprite):
 		self.plantsShootCount += 1
 
 	def update(self):
+		super().update()
 		if self.plantsShootTimer > 0:
 			self.plantsShootTimer -= 1
 		else:
@@ -141,6 +170,7 @@ class ZombieWalker(Sprite):
 	def awake(self):
 		self.healthTotal = 100
 		self.walkingSpeed = 0.25
+		self.eatingRate = 1
 
 	def setup(self, spriteName, scene):
 		self.spriteName = spriteName
@@ -177,6 +207,7 @@ class ZombieWalkerNormal(ZombieWalker):
 		self.type = 'zombies_normal'
 
 	def awake(self):
+		super().awake()
 		self.healthTotal = 100
 		self.walkingSpeed = 0.25
 
@@ -186,6 +217,7 @@ class ZombieWalkerJago(ZombieWalker):
 		self.type = 'zombies_cone'
 
 	def awake(self):
+		super().awake()
 		self.healthTotal = 250
 		self.walkingSpeed = 0.25
 
@@ -195,6 +227,7 @@ class ZombieWalkerHandal(ZombieWalker):
 		self.type = 'zombies_bucket'
 
 	def awake(self):
+		super().awake()
 		self.healthTotal = 500
 		self.walkingSpeed = 0.25
 
@@ -563,7 +596,7 @@ class GameplayScene():
 		spriteName = 'allplants_plantsDD:' + tileName
 		if ddName == 'ui_plantsDD1':
 			sprite = TumbuhanKentang(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
 			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
