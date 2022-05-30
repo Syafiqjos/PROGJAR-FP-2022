@@ -122,6 +122,7 @@ class TumbuhanBuncisNormal(Tumbuhan):
 		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
 		bullet.setup(self.scene)
 		self.scene.plantsBullets.append(bullet)
+		self.scene.triggerPlantShoot(self)
 
 	def update(self):
 		super().update()
@@ -152,6 +153,7 @@ class TumbuhanBuncisJago(Tumbuhan):
 		bullet.setup(self.scene)
 		self.scene.plantsBullets.append(bullet)
 		self.plantsShootCount += 1
+		self.scene.triggerPlantShoot(self)
 
 	def update(self):
 		super().update()

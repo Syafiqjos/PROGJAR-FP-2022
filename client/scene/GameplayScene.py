@@ -463,3 +463,8 @@ class GameplayScene():
 		if self.state == 'ZOMBIES':
 			print('A ZOMBIE SPAWNED!!')
 			self.gameSocket.sendZombieSpawnEvent(tile, zombie)
+
+	def triggerPlantShoot(self, plant):
+		if self.state == 'PLANTS':
+			print('A PLANT SHOOTED!!')
+			self.gameSocket.sendPlantShootEvent(plant)
