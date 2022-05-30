@@ -26,12 +26,14 @@ class MatahariOrb(Sprite):
 			self.destroy()
 
 	def destroy(self):
-		if self in self.scene.plantsOrbs:
-			self.scene.plantsOrbs.remove(self)
-			del self
-		if self in self.scene.zombiesOrbs:
-			self.scene.zombiesOrbs.remove(self)
-			del self
+		if self.scene.state == 'PLANTS':
+			if self in self.scene.plantsOrbs:
+				self.scene.plantsOrbs.remove(self)
+				del self
+		elif self.scene.state == 'ZOMBIES':
+			if self in self.scene.zombiesOrbs:
+				self.scene.zombiesOrbs.remove(self)
+				del self
 
 class PeluruBuncis(Sprite):
 	def __init__(self, screen, position):
@@ -251,6 +253,10 @@ class GameplayScene():
 		self.gameManager = gameManager
 		self.dataManager = self.gameManager.dataManager
 		self.eventManager = self.gameManager.eventManager
+		self.socketManager = self.gameManager.socketManager
+		self.accountSocket = self.gameManager.accountSocket
+		self.gameSocket = self.gameManager.gameSocket
+
 		self.screen = self.gameManager.screen
 		self.sprites = { 'ALL': [], 'ALLPLANTS': [], 'ALLZOMBIES': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [], 'UI': [] }
 		self.objects = {}
@@ -259,6 +265,7 @@ class GameplayScene():
 		# waktu
 		self.clock = pygame.time.Clock()
 
+		self.plantsGameTimer = 60 * 60 * (1) # 1 minutes
 		self.plantsOrbs = []
 		self.plantsMatahariTimerMax = 200
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
@@ -275,7 +282,7 @@ class GameplayScene():
 		self.awake()
 
 	def awake(self):
-		self.state = 'ZOMBIES' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
+		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
 		self.resetCurrency()
 
@@ -515,6 +522,13 @@ class GameplayScene():
 			self.plantsMatahariTimer = self.plantsMatahariTimerMax
 			self.plantsSpawnRandomMatahari()
 
+		# game timer, when time up then the plants win
+		if self.plantsGameTimer > 0:
+			self.plantsGameTimer -= 1
+			print(self.plantsGameTimer)
+		else:
+			self.triggerPlantsWin()
+
 	def updateZombies(self):
 		if self.zombiesMatahariTimer > 0:
 			self.zombiesMatahariTimer -= 1
@@ -641,3 +655,8 @@ class GameplayScene():
 			sprite = ZombieWalkerHandal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+
+	def triggerPlantsWin(self):
+		print('PLANTS WINS!!')
+		self.gameSocket.sendWinnerEvent('plant')
+		self.gameManager.loadScene('MainMenu')
