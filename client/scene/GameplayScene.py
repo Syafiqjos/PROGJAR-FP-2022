@@ -294,7 +294,8 @@ class GameplayScene():
 		# game timer, when time up then the plants win
 		if self.plantsGameTimer > 0:
 			self.plantsGameTimer -= 1
-			print(self.plantsGameTimer)
+			if int(self.plantsGameTimer) % (60 * 5) == 0:
+				print(int(self.plantsGameTimer / 60), 'seconds left to win the game.')
 		else:
 			self.triggerPlantsWin()
 
