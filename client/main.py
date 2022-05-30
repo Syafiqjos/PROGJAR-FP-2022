@@ -42,3 +42,4 @@ if __name__ == '__main__':
 	initialize_connection()
 	run_app()
 	check_run_game()
+	socketManager.close()
