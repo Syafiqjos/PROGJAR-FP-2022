@@ -67,6 +67,7 @@ class Tumbuhan(Sprite):
 		for zombie in self.scene.sprites['ALLZOMBIES']:
 			if self.rect.colliderect(zombie.rect):
 				self.healthTotal -= zombie.eatingRate
+				zombie.stopForAWhile()
 
 		if self.healthTotal <= 0:
 			self.destroy()
@@ -172,6 +173,8 @@ class ZombieWalker(Sprite):
 		self.walkingSpeed = 0.25
 		self.eatingRate = 1
 
+		self.stopInterval = 0
+
 	def setup(self, spriteName, scene):
 		self.spriteName = spriteName
 		self.scene = scene
@@ -182,10 +185,22 @@ class ZombieWalker(Sprite):
 			pass
 		# check if not out of bound on left yet then walk to the left
 		elif self.position[0] > 10:
-			self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
+			self.checkWalk()
 		else:
 			# eat brain and win the current lane
 			pass
+
+	def stopForAWhile(self):
+		self.stopInterval = 20
+
+	def checkWalk(self):
+		if self.stopInterval <= 0:
+			self.walk()
+		else:
+			self.stopInterval -= 1
+
+	def walk(self):
+		self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
 
 	def collideWithBullet(self):
 		for bullet in self.scene.plantsBullets:
