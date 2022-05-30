@@ -32,6 +32,13 @@ def run_game():
 def run_app():
 	app(dataManager, socketManager, accountSocket, gameSocket)
 
+def check_run_game():
+	if dataManager != None:
+		is_logined = dataManager.get('user_token') != ''
+		if is_logined:
+			run_game()
+
 if __name__ == '__main__':
 	initialize_connection()
 	run_app()
+	check_run_game()
