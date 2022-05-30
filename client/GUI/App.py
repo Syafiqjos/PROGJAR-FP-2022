@@ -1,15 +1,32 @@
 import tkinter as tk
 
+import sys
+sys.path.append('..')
+
+from Library.AccountSocket import AccountSocket
+from manager.SocketManager import SocketManager
+
+socketManager = SocketManager('127.0.0.1', 8080)
+socketManager.connect()
+
+accountSocket = AccountSocket(socketManager)
+
 def try_login(entries):
 	email_input = entries['Email'].get()
 	password_input = entries['Password'].get()
 
 	print(email_input, password_input)
 
+	res = accountSocket.sendAccountLoginEvent(email_input, password_input)
+	print(res)
+
 def try_register(entries):
 	email_input = entries['Email'].get()
 
-	print(email_input)	
+	print(email_input)
+
+	res = accountSocket.sendAccountRegisterEvent(email_input)
+	print(res)
 
 def makeform(root, fields):
 	entries = {}
