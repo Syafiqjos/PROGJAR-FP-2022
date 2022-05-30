@@ -3,13 +3,10 @@ import tkinter as tk
 import sys
 sys.path.append('..')
 
-from Library.AccountSocket import AccountSocket
-from manager.SocketManager import SocketManager
-
-socketManager = SocketManager('127.0.0.1', 8080)
-socketManager.connect()
-
-accountSocket = AccountSocket(socketManager)
+dataManager = None
+socketManager = None
+accountSocket = None
+gameSocket = None
 
 def try_login(entries):
 	email_input = entries['Email'].get()
@@ -17,16 +14,18 @@ def try_login(entries):
 
 	print(email_input, password_input)
 
-	res = accountSocket.sendAccountLoginEvent(email_input, password_input)
-	print(res)
+	if accountSocket != None:
+		res = accountSocket.sendAccountLoginEvent(email_input, password_input)
+		print(res)
 
 def try_register(entries):
 	email_input = entries['Email'].get()
 
 	print(email_input)
 
-	res = accountSocket.sendAccountRegisterEvent(email_input)
-	print(res)
+	if accountSocket != None:
+		res = accountSocket.sendAccountRegisterEvent(email_input)
+		print(res)
 
 def makeform(root, fields):
 	entries = {}
@@ -87,7 +86,20 @@ def make_register_window(root):
 
 	return ents
 
-if __name__ == '__main__':
+def app(m_dataManager, m_socketManager = None, m_accountSocket = None, m_gameSocket = None):
+	global dataManager
+	global socketManager
+	global accountSocket
+	global gameSocket
+
+	dataManager = m_dataManager
+	socketManager = m_socketManager
+	accountSocket = m_accountSocket
+	gameSocket = m_gameSocket
+
+	if socketManager != None:
+		socketManager.connect()
+
 	root_original = tk.Tk()
 	root = tk.Frame(root_original)
 	root.pack(side = tk.LEFT)
