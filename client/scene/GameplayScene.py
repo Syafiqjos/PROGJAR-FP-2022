@@ -76,7 +76,7 @@ class TumbuhanKentang(Sprite):
 			self.plantsMatahariTimer -= 1
 		else:
 			self.plantsMatahariTimer = self.plantsMatahariTimerMax
-			self.spawnMatahari()
+			# self.spawnMatahari()
 
 class TumbuhanBuncisNormal(Sprite):
 	def __init__(self, screen, position):
