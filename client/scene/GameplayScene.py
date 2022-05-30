@@ -406,6 +406,7 @@ class GameplayScene():
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD4':
 			if spriteName in self.objects:
+				self.triggerPlantDie(self.objects[spriteName])
 				self.sprites['ALLPLANTS'].remove(self.objects[spriteName])
 				del self.objects[spriteName]
 
@@ -436,3 +437,13 @@ class GameplayScene():
 			print('ZOMBIES WINS!!')
 			self.gameSocket.sendWinnerEvent('zombie')
 			self.gameManager.loadScene('MainMenu')
+
+	def triggerPlantDie(self, plant):
+		if self.state == 'PLANTS':
+			print('A PLANT DIE!!')
+			self.gameSocket.sendPlantDieEvent(plant)
+
+	def triggerZombieDie(self, zombie):
+		if self.state == 'ZOMBIES':
+			print('A ZOMBIE DIE!!')
+			self.gameSocket.sendZombieDieEvent(zombie)

@@ -73,6 +73,7 @@ class Tumbuhan(Sprite):
 
 	def destroy(self):
 		if self.spriteName in self.scene.objects:
+			self.scene.triggerPlantDie(self.scene.objects[self.spriteName])
 			self.scene.sprites['ALLPLANTS'].remove(self.scene.objects[self.spriteName])
 			del self.scene.objects[self.spriteName]
 
@@ -212,6 +213,7 @@ class ZombieWalker(Sprite):
 
 	def destroy(self):
 		if self.spriteName in self.scene.objects:
+			self.scene.triggerZombieDie(self.scene.objects[self.spriteName])
 			self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
 			del self.scene.objects[self.spriteName]
 
