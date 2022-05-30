@@ -436,36 +436,43 @@ class GameplayScene():
 	def triggerPlantsWin(self):
 		if self.state == 'PLANTS':
 			print('PLANTS WINS!!')
-			self.gameSocket.sendWinnerEvent('plant')
+			res = self.gameSocket.sendWinnerEvent('plant')
+			print(res)
 			self.gameManager.loadScene('MainMenu')
 
 	def triggerZombiesWin(self):
 		if self.state == 'ZOMBIES':
 			print('ZOMBIES WINS!!')
-			self.gameSocket.sendWinnerEvent('zombie')
+			res = self.gameSocket.sendWinnerEvent('zombie')
+			print(res)
 			self.gameManager.loadScene('MainMenu')
 
 	def triggerPlantDie(self, plant):
 		if self.state == 'PLANTS':
 			print('A PLANT DIE!!')
-			self.gameSocket.sendPlantDieEvent(plant)
+			res = self.gameSocket.sendPlantDieEvent(plant)
+			print(res)
 
 	def triggerZombieDie(self, zombie):
 		if self.state == 'ZOMBIES':
 			print('A ZOMBIE DIE!!')
-			self.gameSocket.sendZombieDieEvent(zombie)
+			res = self.gameSocket.sendZombieDieEvent(zombie)
+			print(res)
 
 	def triggerPlantSpawn(self, tile, plant):
 		if self.state == 'PLANTS':
 			print('A PLANT SPAWNED!!')
-			self.gameSocket.sendPlantSpawnEvent(tile, plant)
+			res = self.gameSocket.sendPlantSpawnEvent(tile, plant)
+			print(res)
 
 	def triggerZombieSpawn(self, tile, zombie):
 		if self.state == 'ZOMBIES':
 			print('A ZOMBIE SPAWNED!!')
-			self.gameSocket.sendZombieSpawnEvent(tile, zombie)
+			res = self.gameSocket.sendZombieSpawnEvent(tile, zombie)
+			print(res)
 
 	def triggerPlantShoot(self, plant):
 		if self.state == 'PLANTS':
 			print('A PLANT SHOOTED!!')
-			self.gameSocket.sendPlantShootEvent(plant)
+			res = self.gameSocket.sendPlantShootEvent(plant)
+			print(res)
