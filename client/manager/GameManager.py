@@ -1,12 +1,15 @@
 import pygame
 
 class GameManager():
-	def __init__(self, dataManager, eventManager, screenSize):
+	def __init__(self, dataManager, eventManager, screenSize, socketManager = None, accountSocket = None, gameSocket = None):
 		pygame.init()
 		
 		self.screen = pygame.display.set_mode(screenSize)
 		self.dataManager = dataManager
 		self.eventManager = eventManager
+		self.socketManager = socketManager
+		self.accountSocket = accountSocket
+		self.gameSocket = gameSocket
 		self.scenes = {}
 		self.scene = None
 		self.clock = pygame.time.Clock()
