@@ -190,7 +190,7 @@ class ZombieWalker(Sprite):
 			self.checkWalk()
 		else:
 			# eat brain and win the current lane
-			pass
+			self.scene.triggerZombiesWin()
 
 	def stopForAWhile(self):
 		self.stopInterval = 20
@@ -282,7 +282,7 @@ class GameplayScene():
 		self.awake()
 
 	def awake(self):
-		self.state = 'PLANTS' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
+		self.state = 'ZOMBIES' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
 		self.resetCurrency()
 
@@ -659,4 +659,9 @@ class GameplayScene():
 	def triggerPlantsWin(self):
 		print('PLANTS WINS!!')
 		self.gameSocket.sendWinnerEvent('plant')
+		self.gameManager.loadScene('MainMenu')
+
+	def triggerZombiesWin(self):
+		print('ZOMBIES WINS!!')
+		self.gameSocket.sendWinnerEvent('zombie')
 		self.gameManager.loadScene('MainMenu')
