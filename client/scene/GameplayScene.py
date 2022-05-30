@@ -54,10 +54,10 @@ class PeluruBuncis(Sprite):
 			self.scene.plantsBullets.remove(self)
 			del self
 
-class TumbuhanMatahari(Sprite):
+class TumbuhanKentang(Sprite):
 	def __init__(self, screen, position):
 		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
-		self.type = 'plants_sunflower'
+		self.type = 'plants_potato'
 
 	def awake(self):
 		self.plantsMatahariTimerMax = 400
@@ -562,7 +562,7 @@ class GameplayScene():
 	def plantsPlaceDD(self, ddName, tileName, tileObj):
 		spriteName = 'allplants_plantsDD:' + tileName
 		if ddName == 'ui_plantsDD1':
-			sprite = TumbuhanMatahari(self.screen, tileObj.position)
+			sprite = TumbuhanKentang(self.screen, tileObj.position)
 			sprite.setup(self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
 		elif ddName == 'ui_plantsDD2':
