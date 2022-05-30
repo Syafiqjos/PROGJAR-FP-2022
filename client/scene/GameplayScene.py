@@ -426,11 +426,13 @@ class GameplayScene():
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
 
 	def triggerPlantsWin(self):
-		print('PLANTS WINS!!')
-		self.gameSocket.sendWinnerEvent('plant')
-		self.gameManager.loadScene('MainMenu')
+		if self.state == 'PLANTS':
+			print('PLANTS WINS!!')
+			self.gameSocket.sendWinnerEvent('plant')
+			self.gameManager.loadScene('MainMenu')
 
 	def triggerZombiesWin(self):
-		print('ZOMBIES WINS!!')
-		self.gameSocket.sendWinnerEvent('zombie')
-		self.gameManager.loadScene('MainMenu')
+		if self.state == 'ZOMBIES':
+			print('ZOMBIES WINS!!')
+			self.gameSocket.sendWinnerEvent('zombie')
+			self.gameManager.loadScene('MainMenu')
