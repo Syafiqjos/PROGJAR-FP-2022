@@ -103,6 +103,6 @@ def app(m_dataManager, m_socketManager = None, m_accountSocket = None, m_gameSoc
 	root_original = tk.Tk()
 	root = tk.Frame(root_original)
 	root.pack(side = tk.LEFT)
-	ents = make_register_window(root)
+	ents = make_login_window(root)
 
 	root.mainloop()
