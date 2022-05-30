@@ -396,14 +396,17 @@ class GameplayScene():
 			sprite = TumbuhanKentang(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
+			self.triggerPlantSpawn(tileName, sprite)
 		elif ddName == 'ui_plantsDD2':
 			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
+			self.triggerPlantSpawn(tileName, sprite)
 		elif ddName == 'ui_plantsDD3':
 			sprite = TumbuhanBuncisJago(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
+			self.triggerPlantSpawn(tileName, sprite)
 		elif ddName == 'ui_plantsDD4':
 			if spriteName in self.objects:
 				self.triggerPlantDie(self.objects[spriteName])
@@ -417,14 +420,17 @@ class GameplayScene():
 			sprite = ZombieWalkerNormal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+			self.triggerZombieSpawn(tileName, sprite)
 		elif ddName == 'ui_zombiesDD2':
 			sprite = ZombieWalkerJago(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+			self.triggerZombieSpawn(tileName, sprite)
 		elif ddName == 'ui_zombiesDD3':
 			sprite = ZombieWalkerHandal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+			self.triggerZombieSpawn(tileName, sprite)
 
 	def triggerPlantsWin(self):
 		if self.state == 'PLANTS':
@@ -447,3 +453,13 @@ class GameplayScene():
 		if self.state == 'ZOMBIES':
 			print('A ZOMBIE DIE!!')
 			self.gameSocket.sendZombieDieEvent(zombie)
+
+	def triggerPlantSpawn(self, tile, plant):
+		if self.state == 'PLANTS':
+			print('A PLANT SPAWNED!!')
+			self.gameSocket.sendPlantSpawnEvent(tile, plant)
+
+	def triggerZombieSpawn(self, tile, zombie):
+		if self.state == 'ZOMBIES':
+			print('A ZOMBIE SPAWNED!!')
+			self.gameSocket.sendZombieSpawnEvent(tile, zombie)
