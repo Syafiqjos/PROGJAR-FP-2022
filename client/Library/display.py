@@ -1,6 +1,6 @@
 import pygame
 
-class display():
+class Display():
     def __init__(self, text, screen, position):
         self.isRender = True
 

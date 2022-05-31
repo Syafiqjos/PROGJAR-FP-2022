@@ -1,6 +1,6 @@
 # import pygame module in this program
 import pygame
-from display import display
+from Display import Display
  
 # activate the pygame library
 # initiate pygame and give permission
@@ -50,7 +50,7 @@ while True:
     # copying the text surface object
     # to the display surface object
     # at the center coordinate.
-    display.texting(display_surface, 'GeeksForGeeks', (200,200))
+    Display.texting(display_surface, 'GeeksForGeeks', (200,200))
  
     # iterate over the list of Event objects
     # that was returned by pygame.event.get() method.
