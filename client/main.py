@@ -10,10 +10,6 @@ socketManager = None
 accountSocket = None
 gameSocket = None
 
-<<<<<<< HEAD
-gameManager.loadScene('MainMenu')
-gameManager.run()
-=======
 dataManager = None
 
 def initialize_connection():
@@ -47,4 +43,3 @@ if __name__ == '__main__':
 	run_app()
 	check_run_game()
 	socketManager.close()
->>>>>>> aefc240cee9f4ebd22b97f93393af8a403d6921e
