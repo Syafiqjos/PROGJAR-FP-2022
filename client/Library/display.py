@@ -1,27 +1,21 @@
 import pygame
 
 class Display():
-    def __init__(self, text, screen, position):
+    def __init__(self, text, screen, position, size, color):
         self.isRender = True
 
         self.screen = screen #game load screen
-        self.color = (254, 254, 254) # (R,G,B)
-        self.size = 32
+        self.color = color # (R,G,B)
+        self.size = size
         self.font = pygame.font.Font('Assets/Font/Sunflower.otf', self.size) 
         self.texting(screen, text, position)
 
 
-    def texting(self, txt, position):
-        self.text = self.font.render(txt, True, self.color, (255,255,255))
+    def texting(self, screen, txt, position):
+        self.text = self.font.render(txt, True, self.color)
         self.textRect = self.text.get_rect()
         self.textRect.center = position
         self.screen.blit(self.text,self.textRect)
-
-    def setSize(self, size):
-        self.size = size
-
-    def setColor(self, color):
-        self.color = color
     
 
     def awake(self):
