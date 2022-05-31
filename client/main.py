@@ -13,5 +13,5 @@ gameManager.registerScene('LobbyMenu', LobbyMenu);
 gameManager.registerScene('GameplayScene', GameplayScene);
 # gameManager.registerScene('ScoreMenu', ScoreMenu);
 
-gameManager.loadScene('GameplayScene')
+gameManager.loadScene('MainMenu')
 gameManager.run()

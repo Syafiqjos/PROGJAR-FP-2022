@@ -8,12 +8,12 @@ import pygame
 class ScoreMenu(): 
     def __init__(self, gamManager):
         self.gameManager = gameManager
-        self.dataManager = self.gameManager.dataManager
-		self.eventManager = self.gameManager.eventManager
-		self.screen = self.gameManager.screen 
+        self.dataManager = self.gameManager.dataManager 
+        self.eventManager = self.gameManager.eventManager 
+        self.screen = self.gameManager.screen 
         self.sprites = { 'HOME': [], 'LOBBY': [], 'SCORE': [] }
         self.objects = {}
-        
+
         self.awake()
 
     def awake(self):
@@ -24,16 +24,16 @@ class ScoreMenu():
         self.awakeScore()
 
     def awakeHome(self):
-        #what happen
+        pass
 
     def awakeLobby(self):
-        #what happen
+        pass
 
     def awakeScore(self):
-        #what happen
+        pass
 
     def backToLobby(self):
         self.gameManager.loadScene('LobbyMenu')
 
-    def goToMainMenu(self):
-		self.gameManager.loadScene('MainMenu')
+    def goToMainMenu(self): 
+        self.gameManager.loadScene('MainMenu')
