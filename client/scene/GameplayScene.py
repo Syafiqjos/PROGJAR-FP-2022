@@ -1,200 +1,31 @@
 import sys
 sys.path.append('..')
 
-from Library.Sprite import Sprite
-
 import pygame
 import random
 
-class MatahariOrb(Sprite):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
-
-	def awake(self):
-		self.stopFallPos = 120 + random.random() * 290
-		self.destroyTimer = 500
-
-	def setup(self, scene):
-		self.scene = scene
-
-	def update(self):
-		if self.position[1] < self.stopFallPos:
-			self.setPosition((self.position[0], self.position[1] + 1))
-		if self.destroyTimer > 0:
-			self.destroyTimer -= 1
-		else:
-			self.destroy()
-
-	def destroy(self):
-		if self in self.scene.plantsOrbs:
-			self.scene.plantsOrbs.remove(self)
-			del self
-		if self in self.scene.zombiesOrbs:
-			self.scene.zombiesOrbs.remove(self)
-			del self
-
-class PeluruBuncis(Sprite):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/gameicons/PNG/White/1x/minus.png')
-
-	def awake(self):
-		self.bulletSpeed = 2
-		self.bulletDamage = 25
-
-	def setup(self, scene):
-		self.scene = scene
-
-	def update(self):
-		self.setPosition((self.position[0] + self.bulletSpeed, self.position[1]))
-		if self.position[0] > 800:
-			self.destroy()
-
-	def destroy(self):
-		if self in self.scene.plantsBullets:
-			self.scene.plantsBullets.remove(self)
-			del self
-
-class TumbuhanMatahari(Sprite):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0001.png')
-
-	def awake(self):
-		self.plantsMatahariTimerMax = 400
-		self.plantsMatahariTimer = self.plantsMatahariTimerMax
-
-	def setup(self, scene):
-		self.scene = scene
-		self.plantsSpawnMatahari = self.scene.plantsSpawnMatahari
-
-	def spawnMatahari(self):
-		matahari = self.plantsSpawnMatahari((self.position[0], self.position[1] - 10))
-		matahari.stopFallPos = self.position[1] + 10
-
-	def update(self):
-		if self.plantsMatahariTimer > 0:
-			self.plantsMatahariTimer -= 1
-		else:
-			self.plantsMatahariTimer = self.plantsMatahariTimerMax
-			self.spawnMatahari()
-
-class TumbuhanBuncisNormal(Sprite):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
-
-	def awake(self):
-		self.plantsShootTimerMax = 200
-		self.plantsShootTimer = self.plantsShootTimerMax
-
-	def setup(self, scene):
-		self.scene = scene
-
-	def shoot(self):
-		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
-		bullet.setup(self.scene)
-		self.scene.plantsBullets.append(bullet)
-
-	def update(self):
-		if self.plantsShootTimer > 0:
-			self.plantsShootTimer -= 1
-		else:
-			self.plantsShootTimer = self.plantsShootTimerMax
-			self.shoot()
-
-class TumbuhanBuncisJago(Sprite):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
-
-	def awake(self):
-		self.plantsShootTimerMax = 200
-		self.plantsShootTimerMaxShort = 25
-		self.plantsShootCount = 0
-		self.plantsShootTimer = self.plantsShootTimerMax
-
-	def setup(self, scene):
-		self.scene = scene
-
-	def shoot(self):
-		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
-		bullet.setup(self.scene)
-		self.scene.plantsBullets.append(bullet)
-		self.plantsShootCount += 1
-
-	def update(self):
-		if self.plantsShootTimer > 0:
-			self.plantsShootTimer -= 1
-		else:
-			if self.plantsShootCount % 2 == 0:
-				self.plantsShootTimer = self.plantsShootTimerMaxShort
-			else:
-				self.plantsShootTimer = self.plantsShootTimerMax
-			self.shoot()
-
-class ZombieWalker(Sprite):
-	def __init__(self, screen, position, scale, imagePath):
-		super().__init__(screen, position, scale, imagePath)
-
-	def awake(self):
-		self.healthTotal = 100
-		self.walkingSpeed = 0.25
-
-	def setup(self, spriteName, scene):
-		self.spriteName = spriteName
-		self.scene = scene
-
-	def update(self):
-		# check got shoot by peluru tumbuhan
-		if self.collideWithBullet():
-			pass
-		# check if not out of bound on left yet then walk to the left
-		elif self.position[0] > 10:
-			self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
-		else:
-			# eat brain and win the current lane
-			pass
-
-	def collideWithBullet(self):
-		for bullet in self.scene.plantsBullets:
-			if self.rect.colliderect(bullet.rect):
-				self.healthTotal -= bullet.bulletDamage
-				bullet.destroy()
-
-		if self.healthTotal <= 0:
-			self.destroy()
-
-	def destroy(self):
-		if self.spriteName in self.scene.objects:
-			self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
-			del self.scene.objects[self.spriteName]
-
-class ZombieWalkerNormal(ZombieWalker):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
-
-	def awake(self):
-		self.healthTotal = 100
-		self.walkingSpeed = 0.25
-
-class ZombieWalkerJago(ZombieWalker):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
-
-	def awake(self):
-		self.healthTotal = 250
-		self.walkingSpeed = 0.25
-
-class ZombieWalkerHandal(ZombieWalker):
-	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
-
-	def awake(self):
-		self.healthTotal = 500
-		self.walkingSpeed = 0.25
+from Library.Sprite import Sprite
+from Library.GameEntities import MatahariOrb
+from Library.GameEntities import PeluruBuncis
+from Library.GameEntities import Tumbuhan
+from Library.GameEntities import TumbuhanKentang
+from Library.GameEntities import TumbuhanBuncisNormal
+from Library.GameEntities import TumbuhanBuncisJago
+from Library.GameEntities import MatahariOrb
+from Library.GameEntities import ZombieWalker
+from Library.GameEntities import ZombieWalkerNormal
+from Library.GameEntities import ZombieWalkerJago
+from Library.GameEntities import ZombieWalkerHandal
 
 class GameplayScene():
 	def __init__(self, gameManager):
 		self.gameManager = gameManager
 		self.dataManager = self.gameManager.dataManager
 		self.eventManager = self.gameManager.eventManager
+		self.socketManager = self.gameManager.socketManager
+		self.accountSocket = self.gameManager.accountSocket
+		self.gameSocket = self.gameManager.gameSocket
+
 		self.screen = self.gameManager.screen
 		self.sprites = { 'ALL': [], 'ALLPLANTS': [], 'ALLZOMBIES': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [], 'UI': [] }
 		self.objects = {}
@@ -203,6 +34,7 @@ class GameplayScene():
 		# waktu
 		self.clock = pygame.time.Clock()
 
+		self.plantsGameTimer = 60 * 60 * (1) # 1 minutes
 		self.plantsOrbs = []
 		self.plantsMatahariTimerMax = 200
 		self.plantsMatahariTimer = self.plantsMatahariTimerMax
@@ -459,6 +291,14 @@ class GameplayScene():
 			self.plantsMatahariTimer = self.plantsMatahariTimerMax
 			self.plantsSpawnRandomMatahari()
 
+		# game timer, when time up then the plants win
+		if self.plantsGameTimer > 0:
+			self.plantsGameTimer -= 1
+			if int(self.plantsGameTimer) % (60 * 5) == 0:
+				print(int(self.plantsGameTimer / 60), 'seconds left to win the game.')
+		else:
+			self.triggerPlantsWin()
+
 	def updateZombies(self):
 		if self.zombiesMatahariTimer > 0:
 			self.zombiesMatahariTimer -= 1
@@ -554,19 +394,23 @@ class GameplayScene():
 	def plantsPlaceDD(self, ddName, tileName, tileObj):
 		spriteName = 'allplants_plantsDD:' + tileName
 		if ddName == 'ui_plantsDD1':
-			sprite = TumbuhanMatahari(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite = TumbuhanKentang(self.screen, tileObj.position)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
+			self.triggerPlantSpawn(tileName, sprite)
 		elif ddName == 'ui_plantsDD2':
 			sprite = TumbuhanBuncisNormal(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
+			self.triggerPlantSpawn(tileName, sprite)
 		elif ddName == 'ui_plantsDD3':
 			sprite = TumbuhanBuncisJago(self.screen, tileObj.position)
-			sprite.setup(self)
+			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLPLANTS', sprite)
+			self.triggerPlantSpawn(tileName, sprite)
 		elif ddName == 'ui_plantsDD4':
 			if spriteName in self.objects:
+				self.triggerPlantDie(self.objects[spriteName])
 				self.sprites['ALLPLANTS'].remove(self.objects[spriteName])
 				del self.objects[spriteName]
 
@@ -577,11 +421,58 @@ class GameplayScene():
 			sprite = ZombieWalkerNormal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+			self.triggerZombieSpawn(tileName, sprite)
 		elif ddName == 'ui_zombiesDD2':
 			sprite = ZombieWalkerJago(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+			self.triggerZombieSpawn(tileName, sprite)
 		elif ddName == 'ui_zombiesDD3':
 			sprite = ZombieWalkerHandal(self.screen, tileObj.position)
 			sprite.setup(spriteName, self)
 			self.registerSprite(spriteName, 'ALLZOMBIES', sprite)
+			self.triggerZombieSpawn(tileName, sprite)
+
+	def triggerPlantsWin(self):
+		if self.state == 'PLANTS':
+			print('PLANTS WINS!!')
+			res = self.gameSocket.sendWinnerEvent('plant')
+			print(res)
+			self.gameManager.loadScene('MainMenu')
+
+	def triggerZombiesWin(self):
+		if self.state == 'ZOMBIES':
+			print('ZOMBIES WINS!!')
+			res = self.gameSocket.sendWinnerEvent('zombie')
+			print(res)
+			self.gameManager.loadScene('MainMenu')
+
+	def triggerPlantDie(self, plant):
+		if self.state == 'PLANTS':
+			print('A PLANT DIE!!')
+			res = self.gameSocket.sendPlantDieEvent(plant)
+			print(res)
+
+	def triggerZombieDie(self, zombie):
+		if self.state == 'ZOMBIES':
+			print('A ZOMBIE DIE!!')
+			res = self.gameSocket.sendZombieDieEvent(zombie)
+			print(res)
+
+	def triggerPlantSpawn(self, tile, plant):
+		if self.state == 'PLANTS':
+			print('A PLANT SPAWNED!!')
+			res = self.gameSocket.sendPlantSpawnEvent(tile, plant)
+			print(res)
+
+	def triggerZombieSpawn(self, tile, zombie):
+		if self.state == 'ZOMBIES':
+			print('A ZOMBIE SPAWNED!!')
+			res = self.gameSocket.sendZombieSpawnEvent(tile, zombie)
+			print(res)
+
+	def triggerPlantShoot(self, plant):
+		if self.state == 'PLANTS':
+			print('A PLANT SHOOTED!!')
+			res = self.gameSocket.sendPlantShootEvent(plant)
+			print(res)

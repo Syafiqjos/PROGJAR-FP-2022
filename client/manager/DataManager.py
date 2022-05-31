@@ -5,7 +5,9 @@ class DataManager():
 		self.data = {}
 
 	def get(self, key):
-		return self.data[key];
+		if key in self.data:
+			return self.data[key];
+		return ''
 
 	def set(self, key, value):
 		self.data[key] = value

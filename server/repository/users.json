@@ -1,7 +1,14 @@
 {
   "description": "Users data",
   "users": [
-    { "email": "enzoiqbal@gmail.com", "password": "123456" },
-    { "email": "hernowo@gmail.com", "password": "123456" }
+    { "email": "hernowo@gmail.com", "password": "123456" },
+    {
+      "email": "rizadwiandhika@gmail.com",
+      "password": "$2b$12$cW0s9bwD8D8P47AcWc8pF.j5kAP9F52pcQyTB9Ozyf9ZTB5DEtqz."
+    },
+    {
+      "email": "enzoiqbal@gmail.com",
+      "password": "$2b$12$h7kgACMYKRT0/IyH6G01TO0yHGL/FFs7h60QIm76i9Y/wh1SRoUDW"
+    }
   ]
 }
