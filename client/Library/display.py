@@ -7,7 +7,8 @@ class Display():
         self.screen = screen #game load screen
         self.color = color # (R,G,B)
         self.size = size
-        self.font = pygame.font.Font('Assets/Font/Sunflower.otf', self.size) 
+        self.font = pygame.font.Font('Assets/Font/Sunflower.otf', self.size)
+         
         self.texting(screen, text, position)
 
 

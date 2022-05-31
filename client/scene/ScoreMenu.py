@@ -2,34 +2,45 @@ import sys
 sys.path.append('..')
 
 from Library.Sprite import Sprite
+from Library.Display import Display
 
 import pygame
 
 class ScoreMenu(): 
-    def __init__(self, gamManager):
+    def __init__(self, gameManager, status):
         self.gameManager = gameManager
         self.dataManager = self.gameManager.dataManager 
         self.eventManager = self.gameManager.eventManager 
         self.screen = self.gameManager.screen 
-        self.sprites = []
+        self.sprites = {'SCORE': [], 'PLANT': [], 'ZOMBIE': []}
+        self.object = {}
+        self.status = status
 
         self.awake()
+        self.awakeScore(status)
 
     def awake(self):
         self.state = 'SCORE'
 
-        self.lobbyButton = Sprite(
-            self.screen, (100,100), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
+        self.object = Sprite(
+            self.screen, (200,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
         )
         self.mainMenuButton = Sprite(
-            self.screen, (300,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
+            self.screen, (500,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
         )
 
-        self.sprites.append(self.lobbyButton)
-        self.sprites.append(self.mainMenuButton)
+        self.sprites[self.state].append(self.lobbyButton)
+        self.sprites[self.state].append(self.mainMenuButton)
 
-    def awakeScore(self):
-        pass
+    def awakeScore(self, status):
+        if (status):
+            self.state = 'PLANT'
+        else:
+            self.state = 'ZOMBIE'
+        
+        self.object.score = Display (
+            'Congratulation!', self.screen, (300,100), 48, (255,255,255)
+        )
     
     def event(self):
         for event in pygames.event.get():

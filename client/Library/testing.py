@@ -14,8 +14,8 @@ green = (0, 255, 0)
 blue = (0, 0, 128)
  
 # assigning values to X and Y variable
-X = 1000
-Y = 1000
+X = 500
+Y = 500
  
 # create the display surface object
 # of specific dimension..e(X, Y).
@@ -50,7 +50,7 @@ while True:
     # copying the text surface object
     # to the display surface object
     # at the center coordinate.
-    scoring = Display ('noice', display_surface, (X/2,Y/2), 80, white)
+    scoring = Display ('noice', display_surface, (X/2,Y/2), 80, green)
  
     # iterate over the list of Event objects
     # that was returned by pygame.event.get() method.
