@@ -14,7 +14,7 @@ class ScoreMenu():
         self.screen = self.gameManager.screen 
         self.sprites = {'SCORE': [], 'PLANT': [], 'ZOMBIE': []}
         self.object = {}
-        self.dataManager.set('game_winner', 'plant')
+        self.dataManager.set('game_winner', 'zombie')
         self.status = self.dataManager.get('game_winner')
 
         self.awake()
@@ -43,12 +43,18 @@ class ScoreMenu():
         print("masuk awakeScore")
         
         self.object['score'] = Display (
-            'Congratulation!', self.screen, (300,100), 52, (255,255,255)
+            'Congratulation!', self.screen, (400,100), 52, color='white'
         )
+        
+        if self.state is 'PLANT':
+            self.object['scoreWinner'] = Display (
+                (self.state + ' Winner!'), self.screen, (400,200), 48, color='green'
+            )
 
-        self.object ['scoreWinner'] = Display (
-            (self.state + 'Winner!'), self.screen, (300,200), 48, (255,255,255)
-        )
+        else:
+            self.object['scoreWinner'] = Display (
+                (self.state + ' Winner!'), self.screen, (400,200), 48, color='grey'
+            )
     
     def events(self):
         for event in pygame.event.get():
@@ -67,6 +73,8 @@ class ScoreMenu():
         # print("masuk re")
         for sprite in self.sprites[self.state]:
             # print("masuk render2")
+            self.object['score'].awake()
+            self.object['scoreWinner'].awake()
             sprite.render()
 
     def backToLobby(self):
