@@ -1,20 +1,31 @@
-import socket
 import select
-from utils import utils
+import config
+import json
+
+from utils.socket import send
 
 
-def start_game(plant: socket.socket, zombie: socket.socket, list_connection: list):
-    # TODO: complete this function
+def start_game(
+    plant: dict = {"email": "", "socket": None},
+    zombie: dict = {"email": "", "socket": None},
+    connections: list = [],
+):
+    plant_email, plant_sock = plant["email"], plant["socket"]
+    zombie_email, zombie_sock = zombie["email"], zombie["socket"]
+
     while True:
-        print("(from thread) Waiting for ready connection...")
-        rlist, wlist, xlist = select.select([plant, zombie], [], [])
+        rlist, _wlist, _xlist = select.select([plant_sock, zombie_sock], [], [])
         for ready in rlist:
-            raw = ready.recv(BUFF_SIZE)
-
-            # If client has disconnected
+            raw = ready.recv(config.BUFF_SIZE)
             if not raw:
-                # handle disconnection
+                # TODO: handle disconnection properly by checking both clients (not only the disconnect one)
                 print("(from thread) Client disconnected! Exiting thread..\n")
+                pair = plant_sock if ready == zombie_sock else zombie_sock
+                send(pair, {"event": "on_disconnect"})
+                connections.append(pair)
                 return
 
             print("(from thread) Client sent something\n")
+            pair = plant_sock if ready == zombie_sock else zombie_sock
+            data = json.loads(raw)
+            send(pair, data)

@@ -16,7 +16,7 @@ class GameSocket(SocketSender):
 					"y": 1
 				}
 			}
-		})
+		}, False)
 
 	def sendPlantSpawnEvent(self, tile, plant):
 		return self.send({
@@ -33,7 +33,7 @@ class GameSocket(SocketSender):
 					"y": 1
 				}
 			}
-		})
+		}, False)
 
 	def sendZombieMoveEvent(self, tile, zombie):
 		return self.send({
@@ -49,7 +49,7 @@ class GameSocket(SocketSender):
 					"y": 1
 				}
 			}
-		})
+		}, False)
 
 	def sendZombieAttackEvent(self, zombie, plant):
 		return self.send({
@@ -60,7 +60,7 @@ class GameSocket(SocketSender):
 			"plant": {
 				"id": plant.spriteName
 			}
-		})
+		}, False)
 
 	def sendZombieDieEvent(self, zombie):
 		return self.send({
@@ -68,7 +68,7 @@ class GameSocket(SocketSender):
 			"zombie": {
 				"id": zombie.spriteName
 			}
-		})
+		}, False)
 
 	def sendPlantDieEvent(self, plant):
 		return self.send({
@@ -76,7 +76,7 @@ class GameSocket(SocketSender):
 			"plant": {
 				"id": plant.spriteName
 			}
-		})
+		}, False)
 
 	def sendPlantShootEvent(self, plant):
 		return self.send({
@@ -84,7 +84,7 @@ class GameSocket(SocketSender):
 			"plant": {
 				"id": plant.spriteName
 			}
-		})
+		}, False)
 
 	def sendPlantAttackEvent(self, plant, zombie):
 		return self.send({
@@ -95,10 +95,10 @@ class GameSocket(SocketSender):
 			"zombie": {
 				"id": zombie.spriteName
 			}
-		})
+		}, False)
 
 	def sendWinnerEvent(self, winner):
 		return self.send({
 			"event": "on_winner",
 			"winner": winner
-		})
+		}, False)
