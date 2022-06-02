@@ -58,6 +58,11 @@ class GameplayScene():
 	def awake(self):
 		self.state = 'ZOMBIES' # 'ALL', 'ZOMBIES', 'UI', 'PAUSED'
 
+		if self.dataManager.get('user_role') == 'zombie':
+			self.state = 'ZOMBIES'
+		elif self.dataManager.get('user_role') == 'plant':
+			self.state = 'PLANTS'
+
 		self.resetCurrency()
 
 		self.awakeAll()
