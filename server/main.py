@@ -29,7 +29,7 @@ def main():
 
     i = 1
     while True:
-        print(f"Waiting for ready sockets {i}...")
+        # print(f"Waiting for ready sockets {i}...")
         i += 1
         rlist, wlist, xlist = select.select(connections, [], [], config.SELECT_TIMEOUT)
 
