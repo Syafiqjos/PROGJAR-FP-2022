@@ -17,7 +17,7 @@ class GameMessageReceiver(MessageReceiver):
 		try:
 			while self.running:
 				# data = { 'message': 'lol' }
-				data = self.sock.recv(1024)
+				data = self.sock.recv(256)
 				data = data.decode()
 
 				# print(data)
