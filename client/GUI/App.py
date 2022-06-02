@@ -65,13 +65,19 @@ def try_register(entries):
 		res = accountSocket.sendAccountRegisterEvent(email_input)
 		print(res)
 
-def makeform(root, fields):
+def makeform(root, fields, values = None):
 	entries = {}
-	for field in fields:
+	for it in range(len(fields)):
+		field = fields[it]
+		value = ''
+
+		if values is not None:
+			value = values[it]
+
 		row = tk.Frame(root)
 		lab = tk.Label(row, width=22, text=field+": ", anchor='w')
 		ent = tk.Entry(row)
-		ent.insert(0,"")
+		ent.insert(0, value)
 		row.pack(side = tk.TOP, fill = tk.X, padx = 5 , pady = 5)
 		lab.pack(side = tk.LEFT)
 		ent.pack(side = tk.RIGHT, expand = tk.YES, fill = tk.X)
