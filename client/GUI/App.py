@@ -11,10 +11,22 @@ socketManager = None
 accountSocket = None
 gameSocket = None
 
+def find_match(token, role):
+	if accountSocket != None:
+		res = accountSocket.sendFindMatchEvent(token, role)
+
+		return res
+	return None
+
 def on_login_success(res):
+	token = res['token']
+
 	dataManager.set('user_email', res['email_input'])
 	dataManager.set('user_password', res['password_input'])
-	dataManager.set('user_token', res['token'])
+	dataManager.set('user_token', token)
+
+	ne = find_match(token, 'zombie');
+	print(ne)
 
 	root_original.quit()
 
