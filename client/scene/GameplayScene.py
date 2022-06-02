@@ -16,6 +16,7 @@ from Library.GameEntities import ZombieWalker
 from Library.GameEntities import ZombieWalkerNormal
 from Library.GameEntities import ZombieWalkerJago
 from Library.GameEntities import ZombieWalkerHandal
+from Library.GameMessageReceiver import GameMessageReceiver
 
 class GameplayScene():
 	def __init__(self, gameManager):
@@ -25,6 +26,10 @@ class GameplayScene():
 		self.socketManager = self.gameManager.socketManager
 		self.accountSocket = self.gameManager.accountSocket
 		self.gameSocket = self.gameManager.gameSocket
+
+		self.gameMessageReceiver = GameMessageReceiver(self.socketManager.connection)
+		self.gameMessageReceiver.subscribeEventListener(self.eventTrigger)
+		self.gameMessageReceiver.start()
 
 		self.screen = self.gameManager.screen
 		self.sprites = { 'ALL': [], 'ALLPLANTS': [], 'ALLZOMBIES': [], 'PLANTS': [], 'ZOMBIES': [], 'PAUSED': [], 'UI': [] }
@@ -242,6 +247,7 @@ class GameplayScene():
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				self.gameManager.running = False
+				self.gameMessageReceiver.close()
 			if self.isPaused:
 				self.eventsPaused(event)
 			else:
@@ -476,3 +482,20 @@ class GameplayScene():
 			print('A PLANT SHOOTED!!')
 			res = self.gameSocket.sendPlantShootEvent(plant)
 			print(res)
+
+	def eventTrigger(self, data):
+		print('message received from event trigger')
+		print(data)
+
+		event = data['event']
+
+		if event == 'on_winner':
+			self.receiveTriggerWinner(data)
+
+	def receiveTriggerWinner(self, data):
+		if data['winner'] == 'plant':
+			self.dataManager.set('user_winner', 'plant')
+			self.gameManager.loadScene('MainMenu')
+		elif data['winner'] == 'zombie':
+			self.dataManager.set('user_winner', 'zombie')
+			self.gameManager.loadScene('MainMenu')
