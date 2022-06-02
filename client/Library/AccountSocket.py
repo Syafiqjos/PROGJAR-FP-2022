@@ -14,10 +14,11 @@ class AccountSocket(SocketSender):
             "email": email
         })
 
-	def sendFindMatchEvent(self, email):
+	def sendFindMatchEvent(self, token, role):
 		return self.send({
-            "request": "find_match",
-            "email": email
+			"request": "find_match",
+			"token": token,
+			"role": role
         })
 
 	def sendCancelFindMatchEvent(self, token, role):
