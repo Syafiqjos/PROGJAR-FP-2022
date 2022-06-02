@@ -3,6 +3,8 @@
   "users": [
     { "email": "enzoiqbal@gmail.com", "password": "123456" },
     { "email": "hernowo@gmail.com", "password": "123456" },
-    { "email": "rizadwiandhika@gmail.com", "password": "RieEgP" }
+    { "email": "rizadwiandhika@gmail.com", "password": "RieEgP" },
+	{ "email": "syafiqjos@gmail.com", "password": "$2b$12$EXECwbx32u8YdPpWFuXVKOe99k0aHsMxavI.2N1aPHtcZ0zYNZkuK"},
+	{ "email": "syafiqjoschannel@gmail.com", "password": "$2b$12$N507e60tr3/pRnZTI.HCNOSokySctpIEljH0EapQFnbXjo/r6UIJi"}
   ]
 }
