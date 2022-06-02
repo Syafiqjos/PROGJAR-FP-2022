@@ -20,13 +20,18 @@ def find_match(token, role):
 
 def on_login_success(res):
 	token = res['token']
+	role = res['role_input']
 
 	dataManager.set('user_email', res['email_input'])
 	dataManager.set('user_password', res['password_input'])
 	dataManager.set('user_token', token)
+	dataManager.set('user_role', role)
 
-	ne = find_match(token, 'zombie');
+	ne = find_match(token, role);
 	print(ne)
+	if ne['success'] and ne['match_status'] == 'waiting':
+		anotherNe = socketManager.receive()
+		print(anotherNe)
 
 	root_original.quit()
 
@@ -54,9 +59,10 @@ def on_login(res):
 	else:
 		on_login_error(res)
 
-def try_login(entries):
+def try_login(entries, role = 'plant'):
 	email_input = entries['Email'].get()
 	password_input = entries['Password'].get()
+	role_input = role
 
 	print(email_input, password_input)
 
@@ -64,6 +70,7 @@ def try_login(entries):
 		res = accountSocket.sendAccountLoginEvent(email_input, password_input)
 		res['email_input'] = email_input
 		res['password_input'] = password_input
+		res['role_input'] = role_input
 
 		print(res)
 		on_login(res)
@@ -110,9 +117,14 @@ def make_login_window(root):
 
 	ents = makeform(root, fields)
 
-	b1 = tk.Button(root, text = 'Login',
-		command=(lambda e = ents: try_login(e)))
+	b12 = tk.Button(root, text = 'Login as Zombie',
+		command=(lambda e = ents: try_login(e, 'zombie')))
+	b12.pack(side = tk.RIGHT, padx = 5, pady = 5)
+
+	b1 = tk.Button(root, text = 'Login as Plant',
+		command=(lambda e = ents: try_login(e, 'plant')))
 	b1.pack(side = tk.RIGHT, padx = 5, pady = 5)
+
 	b2 = tk.Button(root, text='Register',
 	command=(lambda e = ents: make_register_window(root)))
 	b2.pack(side = tk.LEFT, padx = 5, pady = 5)
