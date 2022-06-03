@@ -122,9 +122,9 @@ class GameplayScene():
 
 	def awakeZombies(self):
 		self.zombiesSpawnRandomMatahari()
-		self.plantsPlaceDD('ui_plantsDD1', 'all_bgTile0x0', self.objects['all_bgTile0x0'])
-		self.plantsPlaceDD('ui_plantsDD2', 'all_bgTile1x1', self.objects['all_bgTile1x1'])
-		self.plantsPlaceDD('ui_plantsDD3', 'all_bgTile1x2', self.objects['all_bgTile1x2'])
+		# self.plantsPlaceDD('ui_plantsDD1', 'all_bgTile0x0', self.objects['all_bgTile0x0'])
+		# self.plantsPlaceDD('ui_plantsDD2', 'all_bgTile1x1', self.objects['all_bgTile1x1'])
+		# self.plantsPlaceDD('ui_plantsDD3', 'all_bgTile1x2', self.objects['all_bgTile1x2'])
 
 	def plantsSpawnRandomMatahari(self):
 		posX = 20 + random.random() * (320 - 20)
@@ -496,6 +496,10 @@ class GameplayScene():
 
 		if event == 'on_winner':
 			self.receiveTriggerWinner(data)
+		elif event == 'on_plant_spawn':
+			self.receiveTriggerPlantSpawn(data)
+		elif event == 'on_zombie_spawn':
+			self.receiveTriggerZombieSpawn(data)
 
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
@@ -504,3 +508,37 @@ class GameplayScene():
 		elif data['winner'] == 'zombie':
 			self.dataManager.set('user_winner', 'zombie')
 			self.gameManager.loadScene('MainMenu')
+
+	def receiveTriggerPlantSpawn(self, data):
+		ddName = None
+		if data['plant']['type'] == 'plants_potato':
+			ddName = 'ui_plantsDD1'
+		elif data['plant']['type'] == 'plants_pea':
+			ddName = 'ui_plantsDD2'
+		elif data['plant']['type'] == 'plants_repeater':
+			ddName = 'ui_plantsDD3'
+
+		tileName = 'all_bgTile' + str(data['plant']['tile']['x']) + 'x' + str(data['plant']['tile']['y'])
+		tileObj = None
+		if tileName in self.objects:
+			tileObj = self.objects[tileName]
+
+		if tileObj is not None:
+			self.plantsPlaceDD(ddName, tileName, tileObj)
+
+	def receiveTriggerZombieSpawn(self, data):
+		ddName = None
+		if data['zombie']['type'] == 'zombies_normal':
+			ddName = 'ui_zombiesDD1'
+		elif data['zombie']['type'] == 'zombies_cone':
+			ddName = 'ui_zombiesDD2'
+		elif data['zombie']['type'] == 'zombies_bucket':
+			ddName = 'ui_zombiesDD3'
+
+		tileName = 'all_bgTile' + str(data['zombie']['tile']['x']) + 'x' + str(data['zombie']['tile']['y'])
+		tileObj = None
+		if tileName in self.objects:
+			tileObj = self.objects[tileName]
+
+		if tileObj is not None:
+			self.zombiesPlaceDD(ddName, tileName, tileObj)
