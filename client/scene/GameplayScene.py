@@ -510,6 +510,10 @@ class GameplayScene():
 			self.receiveTriggerZombieMove(data)
 		elif event == 'on_plant_shoot':
 			self.receiveTriggerPlantShoot(data)
+		elif event == 'on_plant_die':
+			self.receiveTriggerPlantDie(data)
+		elif event == 'on_zombie_die':
+			self.receiveTriggerZombieDie(data)
 
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
@@ -568,3 +572,17 @@ class GameplayScene():
 
 		if plantId in self.objects:
 			self.objects[plantId].shoot(forced = True)
+
+	def receiveTriggerPlantDie(self, data):
+		plant = None
+		plantId = data['plant']['id']
+
+		if plantId in self.objects:
+			self.objects[plantId].destroy(forced = True)
+
+	def receiveTriggerZombieDie(self, data):
+		zombie = None
+		zombieId = data['zombie']['id']
+
+		if zombieId in self.objects:
+			self.objects[zombieId].destroy(forced = True)
