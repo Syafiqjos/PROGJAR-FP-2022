@@ -2,6 +2,9 @@ from .SocketSender import SocketSender;
 
 class GameSocket(SocketSender):
 	def sendZombieSpawnEvent(self, tile, zombie):
+		tileCoords = tile.replace('all_bgTile', '')
+		tileX = tileCoords.split('x')[0]
+		tileY = tileCoords.split('x')[1]
 		return self.send({
 			"event": "on_zombie_spawn",
 			"zombie": {
@@ -12,13 +15,16 @@ class GameSocket(SocketSender):
 					"y": zombie.position[1]
 				},
 				"tile": {
-					"x": 4,
-					"y": 1
+					"x": tileX,
+					"y": tileY
 				}
 			}
 		}, False)
 
 	def sendPlantSpawnEvent(self, tile, plant):
+		tileCoords = tile.replace('all_bgTile', '')
+		tileX = tileCoords.split('x')[0]
+		tileY = tileCoords.split('x')[1]
 		return self.send({
 			"event": "on_plant_spawn",
 			"plant": {
@@ -29,13 +35,16 @@ class GameSocket(SocketSender):
 					"y": plant.position[1]
 				},
 				"tile": {
-					"x": 4,
-					"y": 1
+					"x": tileX,
+					"y": tileY
 				}
 			}
 		}, False)
 
 	def sendZombieMoveEvent(self, tile, zombie):
+		tileCoords = tile.replace('all_bgTile', '')
+		tileX = tileCoords.split('x')[0]
+		tileY = tileCoords.split('x')[1]
 		return self.send({
 			"event": "on_zombie_move",
 			"zombie": {
@@ -45,8 +54,8 @@ class GameSocket(SocketSender):
 					"y": zombie.position[1]
 				},
 				"tile": {
-					"x": 4,
-					"y": 1
+					"x": tileX,
+					"y": tileY
 				}
 			}
 		}, False)
