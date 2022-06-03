@@ -71,11 +71,12 @@ class Tumbuhan(Sprite):
 		if self.healthTotal <= 0:
 			self.destroy()
 
-	def destroy(self):
-		if self.spriteName in self.scene.objects:
-			self.scene.triggerPlantDie(self.scene.objects[self.spriteName])
-			self.scene.sprites['ALLPLANTS'].remove(self.scene.objects[self.spriteName])
-			del self.scene.objects[self.spriteName]
+	def destroy(self, forced = False):
+		if forced or self.scene.state == 'PLANTS':
+			if self.spriteName in self.scene.objects:
+				self.scene.triggerPlantDie(self.scene.objects[self.spriteName])
+				self.scene.sprites['ALLPLANTS'].remove(self.scene.objects[self.spriteName])
+				del self.scene.objects[self.spriteName]
 
 class TumbuhanKentang(Tumbuhan):
 	def __init__(self, screen, position):
@@ -224,11 +225,12 @@ class ZombieWalker(Sprite):
 		if self.healthTotal <= 0:
 			self.destroy()
 
-	def destroy(self):
-		if self.spriteName in self.scene.objects:
-			self.scene.triggerZombieDie(self.scene.objects[self.spriteName])
-			self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
-			del self.scene.objects[self.spriteName]
+	def destroy(self, forced = False):
+		if forced or self.scene.state == 'ZOMBIES':
+			if self.spriteName in self.scene.objects:
+				self.scene.triggerZombieDie(self.scene.objects[self.spriteName])
+				self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
+				del self.scene.objects[self.spriteName]
 
 class ZombieWalkerNormal(ZombieWalker):
 	def __init__(self, screen, position):
