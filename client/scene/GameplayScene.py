@@ -508,6 +508,8 @@ class GameplayScene():
 			self.receiveTriggerZombieSpawn(data)
 		elif event == 'on_zombie_move':
 			self.receiveTriggerZombieMove(data)
+		elif event == 'on_plant_shoot':
+			self.receiveTriggerPlantShoot(data)
 
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
@@ -559,3 +561,10 @@ class GameplayScene():
 			posX = data['zombie']['pos']['x']
 			posY = data['zombie']['pos']['y']
 			self.objects[zombieId].setPosition((posX, posY))
+
+	def receiveTriggerPlantShoot(self, data):
+		plant = None
+		plantId = data['plant']['id']
+
+		if plantId in self.objects:
+			self.objects[plantId].shoot(forced = True)
