@@ -179,8 +179,8 @@ class ZombieWalker(Sprite):
 
 		self.stopInterval = 0
 
-		self.walkTransmitIntervalMax = 200
-		self.walkTransmitInterval = 200
+		self.walkTransmitIntervalMax = 120
+		self.walkTransmitInterval = 120
 
 	def setup(self, spriteName, scene):
 		self.spriteName = spriteName
