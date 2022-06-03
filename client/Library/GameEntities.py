@@ -71,11 +71,12 @@ class Tumbuhan(Sprite):
 		if self.healthTotal <= 0:
 			self.destroy()
 
-	def destroy(self):
-		if self.spriteName in self.scene.objects:
-			self.scene.triggerPlantDie(self.scene.objects[self.spriteName])
-			self.scene.sprites['ALLPLANTS'].remove(self.scene.objects[self.spriteName])
-			del self.scene.objects[self.spriteName]
+	def destroy(self, forced = False):
+		if forced or self.scene.state == 'PLANTS':
+			if self.spriteName in self.scene.objects:
+				self.scene.triggerPlantDie(self.scene.objects[self.spriteName])
+				self.scene.sprites['ALLPLANTS'].remove(self.scene.objects[self.spriteName])
+				del self.scene.objects[self.spriteName]
 
 class TumbuhanKentang(Tumbuhan):
 	def __init__(self, screen, position):
@@ -118,11 +119,12 @@ class TumbuhanBuncisNormal(Tumbuhan):
 		self.spriteName = spriteName
 		self.scene = scene
 
-	def shoot(self):
-		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
-		bullet.setup(self.scene)
-		self.scene.plantsBullets.append(bullet)
-		self.scene.triggerPlantShoot(self)
+	def shoot(self, forced = False):
+		if forced or self.scene.state == 'PLANTS':
+			bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+			bullet.setup(self.scene)
+			self.scene.plantsBullets.append(bullet)
+			self.scene.triggerPlantShoot(self)
 
 	def update(self):
 		super().update()
@@ -148,12 +150,13 @@ class TumbuhanBuncisJago(Tumbuhan):
 		self.spriteName = spriteName
 		self.scene = scene
 
-	def shoot(self):
-		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
-		bullet.setup(self.scene)
-		self.scene.plantsBullets.append(bullet)
-		self.plantsShootCount += 1
-		self.scene.triggerPlantShoot(self)
+	def shoot(self, forced = False):
+		if forced or self.scene.state == 'PLANTS':
+			bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+			bullet.setup(self.scene)
+			self.scene.plantsBullets.append(bullet)
+			self.plantsShootCount += 1
+			self.scene.triggerPlantShoot(self)
 
 	def update(self):
 		super().update()
@@ -176,6 +179,9 @@ class ZombieWalker(Sprite):
 		self.eatingRate = 1
 
 		self.stopInterval = 0
+
+		self.walkTransmitIntervalMax = 120
+		self.walkTransmitInterval = 120
 
 	def setup(self, spriteName, scene):
 		self.spriteName = spriteName
@@ -204,6 +210,12 @@ class ZombieWalker(Sprite):
 	def walk(self):
 		self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
 
+		if self.walkTransmitInterval > 0:
+			self.walkTransmitInterval -= 1
+		else:
+			self.scene.triggerZombieMove(self)
+			self.walkTransmitInterval = self.walkTransmitIntervalMax
+
 	def collideWithBullet(self):
 		for bullet in self.scene.plantsBullets:
 			if self.rect.colliderect(bullet.rect):
@@ -213,11 +225,12 @@ class ZombieWalker(Sprite):
 		if self.healthTotal <= 0:
 			self.destroy()
 
-	def destroy(self):
-		if self.spriteName in self.scene.objects:
-			self.scene.triggerZombieDie(self.scene.objects[self.spriteName])
-			self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
-			del self.scene.objects[self.spriteName]
+	def destroy(self, forced = False):
+		if forced or self.scene.state == 'ZOMBIES':
+			if self.spriteName in self.scene.objects:
+				self.scene.triggerZombieDie(self.scene.objects[self.spriteName])
+				self.scene.sprites['ALLZOMBIES'].remove(self.scene.objects[self.spriteName])
+				del self.scene.objects[self.spriteName]
 
 class ZombieWalkerNormal(ZombieWalker):
 	def __init__(self, screen, position):

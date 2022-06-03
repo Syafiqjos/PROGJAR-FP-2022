@@ -48,10 +48,6 @@ Nanti di awal game:
                     pos: {
                         x: 123,
                         y: 456
-                    },
-                    tile: {
-                        x: 4,
-                        y: 1
                     }
                 }
             }
