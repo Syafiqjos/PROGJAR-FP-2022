@@ -177,6 +177,9 @@ class ZombieWalker(Sprite):
 
 		self.stopInterval = 0
 
+		self.walkTransmitIntervalMax = 200
+		self.walkTransmitInterval = 200
+
 	def setup(self, spriteName, scene):
 		self.spriteName = spriteName
 		self.scene = scene
@@ -203,6 +206,12 @@ class ZombieWalker(Sprite):
 
 	def walk(self):
 		self.setPosition((self.position[0] - self.walkingSpeed, self.position[1]))
+
+		if self.walkTransmitInterval > 0:
+			self.walkTransmitInterval -= 1
+		else:
+			self.scene.triggerZombieMove(self)
+			self.walkTransmitInterval = self.walkTransmitIntervalMax
 
 	def collideWithBullet(self):
 		for bullet in self.scene.plantsBullets:
