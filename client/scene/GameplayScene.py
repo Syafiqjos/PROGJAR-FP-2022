@@ -488,6 +488,12 @@ class GameplayScene():
 			res = self.gameSocket.sendPlantShootEvent(plant)
 			print(res)
 
+	def triggerZombieMove(self, zombie):
+		if self.state == 'ZOMBIES':
+			print('A ZOMBIE MOVE!!')
+			res = self.gameSocket.sendZombieMoveEvent(zombie)
+			print(res)
+
 	def eventTrigger(self, data):
 		print('message received from event trigger')
 		print(data)
@@ -500,6 +506,8 @@ class GameplayScene():
 			self.receiveTriggerPlantSpawn(data)
 		elif event == 'on_zombie_spawn':
 			self.receiveTriggerZombieSpawn(data)
+		elif event == 'on_zombie_move':
+			self.receiveTriggerZombieMove(data)
 
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
@@ -542,3 +550,12 @@ class GameplayScene():
 
 		if tileObj is not None:
 			self.zombiesPlaceDD(ddName, tileName, tileObj)
+
+	def receiveTriggerZombieMove(self, data):
+		zombie = None
+		zombieId = data['zombie']['id']
+
+		if zombieId in self.objects:
+			posX = data['zombie']['pos']['x']
+			posY = data['zombie']['pos']['y']
+			self.objects[zombieId].setPosition((posX, posY))
