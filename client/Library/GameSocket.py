@@ -41,10 +41,7 @@ class GameSocket(SocketSender):
 			}
 		}, False)
 
-	def sendZombieMoveEvent(self, tile, zombie):
-		tileCoords = tile.replace('all_bgTile', '')
-		tileX = tileCoords.split('x')[0]
-		tileY = tileCoords.split('x')[1]
+	def sendZombieMoveEvent(self, zombie):
 		return self.send({
 			"event": "on_zombie_move",
 			"zombie": {
@@ -52,10 +49,6 @@ class GameSocket(SocketSender):
 				"pos": {
 					"x": zombie.position[0],
 					"y": zombie.position[1]
-				},
-				"tile": {
-					"x": tileX,
-					"y": tileY
 				}
 			}
 		}, False)
