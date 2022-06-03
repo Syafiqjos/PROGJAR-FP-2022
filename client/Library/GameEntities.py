@@ -118,11 +118,12 @@ class TumbuhanBuncisNormal(Tumbuhan):
 		self.spriteName = spriteName
 		self.scene = scene
 
-	def shoot(self):
-		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
-		bullet.setup(self.scene)
-		self.scene.plantsBullets.append(bullet)
-		self.scene.triggerPlantShoot(self)
+	def shoot(self, forced = False):
+		if forced or self.scene.state == 'PLANTS':
+			bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+			bullet.setup(self.scene)
+			self.scene.plantsBullets.append(bullet)
+			self.scene.triggerPlantShoot(self)
 
 	def update(self):
 		super().update()
@@ -148,12 +149,13 @@ class TumbuhanBuncisJago(Tumbuhan):
 		self.spriteName = spriteName
 		self.scene = scene
 
-	def shoot(self):
-		bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
-		bullet.setup(self.scene)
-		self.scene.plantsBullets.append(bullet)
-		self.plantsShootCount += 1
-		self.scene.triggerPlantShoot(self)
+	def shoot(self, forced = False):
+		if forced or self.scene.state == 'PLANTS':
+			bullet = PeluruBuncis(self.screen, (self.position[0], self.position[1] - 10))
+			bullet.setup(self.scene)
+			self.scene.plantsBullets.append(bullet)
+			self.plantsShootCount += 1
+			self.scene.triggerPlantShoot(self)
 
 	def update(self):
 		super().update()
