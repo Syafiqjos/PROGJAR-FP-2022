@@ -5,6 +5,7 @@ import pygame
 import random
 
 from Library.Sprite import Sprite
+from Library.display import Display
 from Library.GameEntities import MatahariOrb
 from Library.GameEntities import PeluruBuncis
 from Library.GameEntities import Tumbuhan
@@ -17,6 +18,7 @@ from Library.GameEntities import ZombieWalkerNormal
 from Library.GameEntities import ZombieWalkerJago
 from Library.GameEntities import ZombieWalkerHandal
 from Library.GameMessageReceiver import GameMessageReceiver
+
 
 class GameplayScene():
 	def __init__(self, gameManager):
@@ -38,6 +40,9 @@ class GameplayScene():
 
 		# waktu
 		self.clock = pygame.time.Clock()
+		self.clockText = None
+		
+		self.currencyText = None
 
 		self.plantsGameTimer = 60 * 60 * (1) # 1 minutes
 		self.plantsOrbs = []
@@ -46,6 +51,7 @@ class GameplayScene():
 
 		self.plantsBullets = []
 
+		self.zombiesGameTimer = 60 * 60 * (1)
 		self.zombiesOrbs = []
 		self.zombiesIndex = 0
 		self.zombiesMatahariTimerMax = 200
@@ -98,12 +104,26 @@ class GameplayScene():
 			self.drawSprite('ui_plantsDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0002.png')
 			self.drawSprite('ui_plantsDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0003.png')
 			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
+			self.registerSprite('ui_plantDD1_price', 'UI', Display('50', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 0, plantsDDPivot[1] + 60), 22, color='yellow'))
+			self.registerSprite('ui_plantDD2_price', 'UI', Display('100', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 1, plantsDDPivot[1] + 60), 22, color='yellow'))
+			self.registerSprite('ui_plantDD3_price', 'UI', Display('200', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 2, plantsDDPivot[1] + 60), 22, color='yellow'))
+			self.registerSprite('ui_plantDD4_price', 'UI', Display('0', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 3, plantsDDPivot[1] + 60), 22, color='yellow'))
 		elif self.state == 'ZOMBIES':
 			plantsDDPivot = (8, 6)
 			self.drawSprite('ui_zombiesDD1', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 0, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
 			self.drawSprite('ui_zombiesDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
 			self.drawSprite('ui_zombiesDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
+			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
+			self.registerSprite('ui_zombieDD1_price', 'UI', Display('50', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 0, plantsDDPivot[1] + 60), 22, color='yellow'))
+			self.registerSprite('ui_zombieDD2_price', 'UI', Display('100', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 1, plantsDDPivot[1] + 60), 22, color='yellow'))
+			self.registerSprite('ui_zombieDD3_price', 'UI', Display('200', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 2, plantsDDPivot[1] + 60), 22, color='yellow'))
 
+		self.currencyText = Display(str(self.getCurrency()), self.screen, (35, 65), 32, color='yellow')
+		self.registerSprite('ui_matahariUI_currency', 'UI', self.currencyText)
+
+		self.clockText = Display(str(0), self.screen, (600, 35), 48, color='white')
+		self.registerSprite('ui_clock', 'UI', self.clockText)
+	
 		self.drawSprite('ui_DDSelect', 'UI', (650, 10), (1, 1), 'Assets/gameicons/PNG/White/1x/tablet.png')
 		self.objects['ui_DDSelect'].isRender = False
 		
@@ -290,10 +310,14 @@ class GameplayScene():
 				sprite.render()
 
 	def update(self):
+		self.updateCurrency()
 		if self.state == 'PLANTS':
 			self.updatePlants()
 		elif self.state == 'ZOMBIES':
 			self.updateZombies()
+
+	def updateCurrency(self):
+		self.currencyText.setText(str(self.getCurrency()))
 
 	def updatePlants(self):
 		if self.plantsMatahariTimer > 0:
@@ -307,15 +331,29 @@ class GameplayScene():
 			self.plantsGameTimer -= 1
 			if int(self.plantsGameTimer) % (60 * 5) == 0:
 				print(int(self.plantsGameTimer / 60), 'seconds left to win the game.')
+			
+			if int(self.plantsGameTimer) % (60 * 1) == 0:
+				self.clockText.setText(str(int(self.plantsGameTimer / 60)))
+				
 		else:
 			self.triggerPlantsWin()
 
 	def updateZombies(self):
 		if self.zombiesMatahariTimer > 0:
 			self.zombiesMatahariTimer -= 1
+			if int(self.zombiesGameTimer) % (60 * 5) == 0:
+				print(int(self.zombiesGameTimer / 60), 'seconds left to win the game.')
 		else:
 			self.zombiesMatahariTimer = self.zombiesMatahariTimerMax
 			self.zombiesSpawnRandomMatahari()
+		
+		if self.zombiesGameTimer > 0:
+			self.zombiesGameTimer -= 1
+			if int(self.zombiesGameTimer) % (60 * 5) == 0:
+				print(int(self.zombiesGameTimer / 60), 'seconds left to win the game.')
+			
+			if int(self.zombiesGameTimer) % (60 * 1) == 0:
+				self.clockText.setText(str(int(self.zombiesGameTimer / 60)))
 
 	def pauseGame(self):
 		self.isPaused = True
