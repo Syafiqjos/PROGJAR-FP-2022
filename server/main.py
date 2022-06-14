@@ -8,13 +8,12 @@ import utils
 from utils.error import AppError
 from utils.socket import send
 
-connections = []
-
 
 def main():
     config.init()
     zombie_queue = []
     plant_queue = []
+    connections = []
 
     available_actions = {
         config.actions.LOGIN: controllers.login,
