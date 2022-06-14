@@ -5,7 +5,7 @@ import pygame
 import random
 
 from Library.Sprite import Sprite
-from Library.display import Display
+from Library.Display import Display
 from Library.GameEntities import MatahariOrb
 from Library.GameEntities import PeluruBuncis
 from Library.GameEntities import Tumbuhan
