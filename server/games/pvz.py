@@ -18,7 +18,6 @@ def start_game(
         for ready in rlist:
             raw = ready.recv(config.BUFF_SIZE)
             if not raw:
-                # TODO: handle disconnection properly by checking both clients (not only the disconnect one)
                 print("(from thread) Client disconnected! Exiting thread..\n")
                 pair = plant_sock if ready == zombie_sock else zombie_sock
                 send(pair, {"event": "on_disconnect"})
