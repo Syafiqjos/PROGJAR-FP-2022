@@ -487,6 +487,7 @@ class GameplayScene():
 			print('PLANTS WINS!!')
 			res = self.gameSocket.sendWinnerEvent('plant')
 			print(res)
+			self.dataManager.set('user_winner', 'plant')
 			self.gameManager.loadScene('ScoreMenu')
 
 	def triggerZombiesWin(self):
@@ -494,6 +495,7 @@ class GameplayScene():
 			print('ZOMBIES WINS!!')
 			res = self.gameSocket.sendWinnerEvent('zombie')
 			print(res)
+			self.dataManager.set('user_winner', 'zombie')
 			self.gameManager.loadScene('ScoreMenu')
 
 	def triggerPlantDie(self, plant):
@@ -556,10 +558,10 @@ class GameplayScene():
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
 			self.dataManager.set('user_winner', 'plant')
-			self.gameManager.loadScene('MainMenu')
+			self.gameManager.loadScene('ScoreMenu')
 		elif data['winner'] == 'zombie':
 			self.dataManager.set('user_winner', 'zombie')
-			self.gameManager.loadScene('MainMenu')
+			self.gameManager.loadScene('ScoreMenu')
 
 	def receiveTriggerPlantSpawn(self, data):
 		ddName = None
