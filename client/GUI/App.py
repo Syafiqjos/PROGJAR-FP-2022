@@ -27,11 +27,13 @@ def on_login_success(res):
 	dataManager.set('user_token', token)
 	dataManager.set('user_role', role)
 
+	"""
 	ne = find_match(token, role);
 	print(ne)
 	if ne['success'] and ne['match_status'] == 'waiting':
 		anotherNe = socketManager.receive()
 		print(anotherNe)
+	"""
 
 	root_original.quit()
 
@@ -117,12 +119,18 @@ def make_login_window(root):
 
 	ents = makeform(root, fields)
 
+	"""
 	b12 = tk.Button(root, text = 'Login as Zombie',
 		command=(lambda e = ents: try_login(e, 'zombie')))
 	b12.pack(side = tk.RIGHT, padx = 5, pady = 5)
 
 	b1 = tk.Button(root, text = 'Login as Plant',
 		command=(lambda e = ents: try_login(e, 'plant')))
+	b1.pack(side = tk.RIGHT, padx = 5, pady = 5)
+	"""
+
+	b1 = tk.Button(root, text = 'Login',
+		command=(lambda e = ents: try_login(e, None)))
 	b1.pack(side = tk.RIGHT, padx = 5, pady = 5)
 
 	b2 = tk.Button(root, text='Register',
