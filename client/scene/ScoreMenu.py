@@ -18,14 +18,15 @@ class ScoreMenu():
         # self.status = self.dataManager.get('user_role')
 		# self.winner = self.dataManager.get('user_winner')
         self.status = self.dataManager.get('user_winner')
+        self.role = self.dataManager.get('user_role')
 
         self.awake()
         self.awakeScore()
 
     def awake(self):
-        if (self.status == 'plant'):
+        if (self.role == 'plant'):
             self.state = 'PLANT'
-        elif (self.status == 'zombie'):
+        elif (self.role == 'zombie'):
             self.state = 'ZOMBIE'
 
         self.lobbyButton = Sprite(
@@ -43,19 +44,26 @@ class ScoreMenu():
 
     def awakeScore(self):
         print("masuk awakeScore")
+
+        print('winner is', self.status)
         
-        self.object['score'] = Display (
-            'Congratulation!', self.screen, (400,100), 52, color=(255, 255, 255)
-        )
+        if self.status == 'plant' and self.state == 'PLANT' or self.status == 'zombie' and self.state == 'ZOMBIE':
+                self.object['score'] = Display (
+                    'Congratulation!', self.screen, (400,100), 52, color=(255, 255, 255)
+                )
+        else:
+                self.object['score'] = Display (
+                    'You Lose!', self.screen, (400,100), 52, color=(255, 0, 0)
+                )
         
-        if self.state is 'PLANT':
+        if self.status is 'plant':
             self.object['scoreWinner'] = Display (
-                (self.state + ' Winner!'), self.screen, (400,200), 48, color=(0, 255, 0)
+                ('PLANT Winner!'), self.screen, (400,200), 48, color=(0, 255, 0)
             )
 
         else:
             self.object['scoreWinner'] = Display (
-                (self.state + ' Winner!'), self.screen, (400,200), 48, color=(125, 125, 125)
+                ('ZOMBIE Winner!'), self.screen, (400,200), 48, color=(125, 125, 125)
             )
     
     def events(self):
