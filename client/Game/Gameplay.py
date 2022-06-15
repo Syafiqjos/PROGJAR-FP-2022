@@ -6,6 +6,7 @@ from manager.DataManager import DataManager
 from manager.EventManager import EventManager
 from scene.MainMenu import MainMenu
 from scene.LobbyMenu import LobbyMenu
+from scene.ScoreMenu import ScoreMenu
 from scene.GameplayScene import GameplayScene
 
 def game(dataManager, socketManager, accountSocket, gameSocket):
