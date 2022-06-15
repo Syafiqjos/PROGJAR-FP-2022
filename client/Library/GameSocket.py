@@ -104,3 +104,9 @@ class GameSocket(SocketSender):
 			"event": "on_winner",
 			"winner": winner
 		}, False)
+
+	def sendTimeSyncEvent(self, time):
+		return self.send({
+			"event": "on_time_sync",
+			"time": time
+		}, False)
