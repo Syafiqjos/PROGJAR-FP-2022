@@ -20,6 +20,9 @@ class MainMenu:
 
 		self.state = 'MENU' # MENU | LOADING
 
+		self.will_find_match = False
+		self.find_match_timer = 60
+
 		self.awake()
 
 	def awake(self):
@@ -39,9 +42,9 @@ class MainMenu:
 			self.screen, (500, 400), (1, 1), "Assets/gameicons/PNG/White/1x/power.png"
 		)
 
-		self.cancelButton = Sprite(
-			self.screen, (400, 400), (1, 1), "Assets/gameicons/PNG/White/1x/power.png"
-		)
+		# self.cancelButton = Sprite(self.screen, (400, 400), (1, 1), "Assets/gameicons/PNG/White/1x/power.png")
+
+		self.loadingText = Display("Finding Match..", self.screen, (200, 240), 32, (255, 255, 255));
 
 		self.spritesMenu.append(self.playAsPlantsButton)
 		self.spritesMenu.append(self.playAsZombiesButton)
@@ -50,7 +53,10 @@ class MainMenu:
 		self.spritesMenu.append(self.exitButton)
 		self.spritesMenu.append(self.usernameText)
 
-		self.spritesLoading.append(self.cancelButton)
+		# self.spritesLoading.append(self.cancelButton)
+		self.spritesLoading.append(self.loadingText)
+
+		self.try_disconnect_match()
 
 	def events(self):
 		for event in pygame.event.get():
@@ -68,9 +74,10 @@ class MainMenu:
 					print("exit game")
 					self.exitGame()
 			elif self.state == 'LOADING':
-				if self.eventManager.checkOnClick(event, self.cancelButton):
-					print("cancel game")
-					self.cancelGame()
+				pass
+				# if self.eventManager.checkOnClick(event, self.cancelButton):
+					# print("cancel game")
+					# self.cancelGame()
 
 	def render(self):
 		self.screen.fill((0, 0, 0))
@@ -82,23 +89,38 @@ class MainMenu:
 			for sprite in self.spritesLoading:
 				sprite.render()
 
+		self.update()
+
+	def update(self):
+		if self.will_find_match:
+			if self.find_match_timer > 0:
+				self.find_match_timer -= 1
+			else:
+				self.will_find_match = False
+				self.find_match_timer = 60
+				self.try_find_match(self.token, self.role)
+
 	def playGameAsPlants(self):
 		# self.gameManager.loadScene("LobbyMenu")
 		self.state = 'LOADING'
 		
-		token = self.dataManager.get('user_token')
-		role = 'plant'
+		self.token = self.dataManager.get('user_token')
+		self.role = 'plant'
 
-		self.try_find_match(token, role)
+		# self.try_find_match(token, role)
+		self.will_find_match = True
+		self.find_match_timer = 60
 
 	def playGameAsZombies(self):
         # self.gameManager.loadScene("LobbyMenu")
 		self.state = 'LOADING'
 
-		token = self.dataManager.get('user_token')
-		role = 'zombie'
+		self.token = self.dataManager.get('user_token')
+		self.role = 'zombie'
 
-		self.try_find_match(token, role)
+		# self.try_find_match(token, role)
+		self.will_find_match = True
+		self.find_match_timer = 60
 
 	def exitGame(self):
 		self.gameManager.running = False
@@ -124,3 +146,17 @@ class MainMenu:
 		self.dataManager.set('user_role', role)
 
 		self.gameManager.loadScene('GameplayScene');
+
+	def try_cancel_match(self):
+		if self.dataManager.get('user_role'):
+			token = self.dataManager.get('user_token')
+			role = self.dataManager.get('user_role')
+
+			self.gameManager.accountSocket.sendCancelFindMatchEvent(token, role)
+
+	def try_disconnect_match(self):
+		if self.dataManager.get('user_role'):
+			token = self.dataManager.get('user_token')
+			role = self.dataManager.get('user_role')
+
+			self.gameManager.accountSocket.sendCancelFindMatchEvent(token, role)
