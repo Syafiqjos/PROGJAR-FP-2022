@@ -17,7 +17,7 @@ class ScoreMenu():
         # self.dataManager.set('game_winner', 'zombie')
         # self.status = self.dataManager.get('user_role')
 		# self.winner = self.dataManager.get('user_winner')
-		self.status = self.dataManager.get('user_winner')
+        self.status = self.dataManager.get('user_winner')
 
         self.awake()
         self.awakeScore()
@@ -45,17 +45,17 @@ class ScoreMenu():
         print("masuk awakeScore")
         
         self.object['score'] = Display (
-            'Congratulation!', self.screen, (400,100), 52, color='white'
+            'Congratulation!', self.screen, (400,100), 52, color=(255, 255, 255)
         )
         
         if self.state is 'PLANT':
             self.object['scoreWinner'] = Display (
-                (self.state + ' Winner!'), self.screen, (400,200), 48, color='green'
+                (self.state + ' Winner!'), self.screen, (400,200), 48, color=(0, 255, 0)
             )
 
         else:
             self.object['scoreWinner'] = Display (
-                (self.state + ' Winner!'), self.screen, (400,200), 48, color='grey'
+                (self.state + ' Winner!'), self.screen, (400,200), 48, color=(125, 125, 125)
             )
     
     def events(self):
