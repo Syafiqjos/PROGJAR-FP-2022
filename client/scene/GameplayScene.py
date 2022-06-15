@@ -110,9 +110,9 @@ class GameplayScene():
 			self.registerSprite('ui_plantDD4_price', 'UI', Display('0', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 3, plantsDDPivot[1] + 60), 22, color=(255, 255, 0)))
 		elif self.state == 'ZOMBIES':
 			plantsDDPivot = (8, 6)
-			self.drawSprite('ui_zombiesDD1', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 0, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
-			self.drawSprite('ui_zombiesDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
-			self.drawSprite('ui_zombiesDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
+			self.drawSprite('ui_zombiesDD1', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 0, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/our/skeleton-01.png')
+			self.drawSprite('ui_zombiesDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/our/skeleton-02.png')
+			self.drawSprite('ui_zombiesDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/our/skeleton-03.png')
 			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
 			self.registerSprite('ui_zombieDD1_price', 'UI', Display('50', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 0, plantsDDPivot[1] + 60), 22, color=(255, 255, 0)))
 			self.registerSprite('ui_zombieDD2_price', 'UI', Display('100', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 1, plantsDDPivot[1] + 60), 22, color=(255, 255, 0)))
