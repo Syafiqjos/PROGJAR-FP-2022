@@ -14,8 +14,10 @@ class ScoreMenu():
         self.screen = self.gameManager.screen 
         self.sprites = {'SCORE': [], 'PLANT': [], 'ZOMBIE': []}
         self.object = {}
-        self.dataManager.set('game_winner', 'zombie')
-        self.status = self.dataManager.get('game_winner')
+        # self.dataManager.set('game_winner', 'zombie')
+        # self.status = self.dataManager.get('user_role')
+		# self.winner = self.dataManager.get('user_winner')
+		self.status = self.dataManager.get('user_winner')
 
         self.awake()
         self.awakeScore()
