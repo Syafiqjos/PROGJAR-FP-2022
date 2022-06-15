@@ -5,7 +5,7 @@ from Library.Sprite import Sprite
 
 class MatahariOrb(Sprite):
 	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0000.png')
+		super().__init__(screen, position, (1, 1), 'Assets/our/Sun.png')
 
 	def awake(self):
 		self.stopFallPos = 120 + random.random() * 290
@@ -34,7 +34,7 @@ class MatahariOrb(Sprite):
 
 class PeluruBuncis(Sprite):
 	def __init__(self, screen, position):
-		super().__init__(screen, position, (1, 1), 'Assets/gameicons/PNG/White/1x/minus.png')
+		super().__init__(screen, position, (1, 1), 'Assets/our/Bean_Ammo.png')
 
 	def awake(self):
 		self.bulletSpeed = 2
