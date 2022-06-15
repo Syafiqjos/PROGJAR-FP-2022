@@ -17,5 +17,5 @@ def game(dataManager, socketManager, accountSocket, gameSocket):
 	gameManager.registerScene('GameplayScene', GameplayScene);
 	gameManager.registerScene('ScoreMenu', ScoreMenu);
 
-	gameManager.loadScene('GameplayScene')
+	gameManager.loadScene('MainMenu')
 	gameManager.run()
