@@ -156,7 +156,13 @@ class MainMenu:
 
 	def try_disconnect_match(self):
 		if self.dataManager.get('user_role'):
-			token = self.dataManager.get('user_token')
-			role = self.dataManager.get('user_role')
+			self.gameManager.socketManager.close()
+			self.gameManager.socketManager.connect()
 
-			self.gameManager.accountSocket.sendCancelFindMatchEvent(token, role)
+			email_input = self.dataManager.get('user_email')
+			password_input = self.dataManager.get('user_password')
+
+			res = self.gameManager.accountSocket.sendAccountLoginEvent(email_input, password_input)
+			token = res['token']
+
+			self.dataManager.set('user_token', token)
