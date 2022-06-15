@@ -24,7 +24,16 @@ def start_game(
                 connections.append(pair)
                 return
 
-            print("(from thread) Client sent something\n")
+            print("(from thread) Client broadcasting something\n")
             pair = plant_sock if ready == zombie_sock else zombie_sock
             data = json.loads(raw)
             send(pair, data)
+
+            # Handle when game has ended
+            if data.get("event", "") == "on_winner":
+                print(
+                    "(from thread) Game has ended! Returining clients to connections list...\n"
+                )
+                connections.append(plant_sock)
+                connections.append(zombie_sock)
+                return
