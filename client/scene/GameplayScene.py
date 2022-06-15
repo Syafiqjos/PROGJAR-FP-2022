@@ -334,6 +334,7 @@ class GameplayScene():
 			
 			if int(self.plantsGameTimer) % (60 * 1) == 0:
 				self.clockText.setText(str(int(self.plantsGameTimer / 60)))
+				self.triggerTimeSync(self.plantsGameTimer);
 				
 		else:
 			self.triggerPlantsWin()
@@ -534,6 +535,11 @@ class GameplayScene():
 			res = self.gameSocket.sendZombieMoveEvent(zombie)
 			print(res)
 
+	def triggerTimeSync(self, time):
+		if self.state == 'PLANTS':
+			res = self.gameSocket.sendTimeSyncEvent(time)
+			print(res)
+
 	def eventTrigger(self, data):
 		print('message received from event trigger')
 		print(data)
@@ -554,6 +560,8 @@ class GameplayScene():
 			self.receiveTriggerPlantDie(data)
 		elif event == 'on_zombie_die':
 			self.receiveTriggerZombieDie(data)
+		elif event == 'on_time_sync':
+			self.receiveTriggerTimeSync(data)
 
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
@@ -626,3 +634,7 @@ class GameplayScene():
 
 		if zombieId in self.objects:
 			self.objects[zombieId].destroy(forced = True)
+
+	def receiveTriggerTimeSync(self, data):
+		if self.state == 'ZOMBIES':
+			self.zombiesGameTimer = data['time']
