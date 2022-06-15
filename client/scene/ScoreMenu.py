@@ -29,16 +29,16 @@ class ScoreMenu():
         elif (self.role == 'zombie'):
             self.state = 'ZOMBIE'
 
-        self.lobbyButton = Sprite(
-            self.screen, (200,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
-        )
+        # self.lobbyButton = Sprite(
+            # self.screen, (200,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
+        # )
         self.mainMenuButton = Sprite(
             self.screen, (500,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
         )
 
         print("masuk awake")
 
-        self.sprites[self.state].append(self.lobbyButton)
+        # self.sprites[self.state].append(self.lobbyButton)
         self.sprites[self.state].append(self.mainMenuButton)
 
 
@@ -71,9 +71,9 @@ class ScoreMenu():
             if event.type == pygame.QUIT:
                 print("Quiting the Game")
                 self.exitGame()
-            if self.eventManager.checkOnClick(event, self.lobbyButton):
-                print("going back to Lobby.")
-                self.backToLobby()
+            # if self.eventManager.checkOnClick(event, self.lobbyButton):
+                # print("going back to Lobby.")
+                # self.backToLobby()
             elif self.eventManager.checkOnClick(event, self.mainMenuButton):
                 print("going back to main menu...")
                 self.goToMainMenu()
