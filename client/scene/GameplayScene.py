@@ -113,7 +113,7 @@ class GameplayScene():
 			self.drawSprite('ui_zombiesDD1', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 0, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/our/skeleton-01.png')
 			self.drawSprite('ui_zombiesDD2', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 1, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/our/skeleton-02.png')
 			self.drawSprite('ui_zombiesDD3', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 2, plantsDDPivot[1] + 10), (0.08, 0.08), 'Assets/our/skeleton-03.png')
-			self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
+			# self.drawSprite('ui_plantsDD4', 'UI', (plantsDDPivot[0] + 10 + 60 + 60 * 3, plantsDDPivot[1] + 10), (1, 1), 'Assets/kenney_pixelshmup/Ships/ship_0004.png')
 			self.registerSprite('ui_zombieDD1_price', 'UI', Display('50', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 0, plantsDDPivot[1] + 60), 22, color=(255, 255, 0)))
 			self.registerSprite('ui_zombieDD2_price', 'UI', Display('100', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 1, plantsDDPivot[1] + 60), 22, color=(255, 255, 0)))
 			self.registerSprite('ui_zombieDD3_price', 'UI', Display('200', self.screen, (plantsDDPivot[0] + 25 + 60 + 60 * 2, plantsDDPivot[1] + 60), 22, color=(255, 255, 0)))
@@ -136,6 +136,9 @@ class GameplayScene():
 		self.drawSprite('paused_bgPause', 'PAUSED', (80, 80), (36, 20), 'Assets/kenney_pixelshmup/Tiles/tile_0115.png')
 		self.drawSprite('paused_unpauseButton', 'PAUSED', (240, 240), (1, 1), 'Assets/gameicons/PNG/White/1x/forward.png')
 		self.drawSprite('paused_disconnectButton', 'PAUSED', (120, 240), (1, 1), 'Assets/gameicons/PNG/White/1x/door.png')
+
+		self.pausedText = Display('Pause Menu', self.screen, (300, 135), 24, color=(255, 255, 255))
+		self.registerSprite('paused_titleText', 'PAUSED', self.pausedText)
 
 	def awakePlants(self):
 		self.plantsSpawnRandomMatahari()
@@ -271,6 +274,7 @@ class GameplayScene():
 	def events(self):
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
+				self.triggerOtherPlayerDisconnected()
 				self.gameManager.running = False
 				self.gameMessageReceiver.close()
 			if self.isPaused:
@@ -360,7 +364,8 @@ class GameplayScene():
 		self.isPaused = True
 
 	def disconnectToMainMenu(self):
-		self.gameManager.loadScene('MainMenu')
+		self.triggerOtherPlayerDisconnected()
+		# self.gameManager.loadScene('MainMenu')
 
 	def unpauseGame(self):
 		self.isPaused = False
@@ -540,6 +545,10 @@ class GameplayScene():
 			res = self.gameSocket.sendTimeSyncEvent(time)
 			print(res)
 
+	def triggerOtherPlayerDisconnected(self):
+		res = self.gameSocket.sendDisconnectEvent()
+		self.gameManager.loadScene('LobbyMenu')
+
 	def eventTrigger(self, data):
 		print('message received from event trigger')
 		print(data)
@@ -562,6 +571,8 @@ class GameplayScene():
 			self.receiveTriggerZombieDie(data)
 		elif event == 'on_time_sync':
 			self.receiveTriggerTimeSync(data)
+		elif event == 'on_disconnect':
+			self.receiveTriggerDisconnect(data)
 
 	def receiveTriggerWinner(self, data):
 		if data['winner'] == 'plant':
@@ -638,3 +649,7 @@ class GameplayScene():
 	def receiveTriggerTimeSync(self, data):
 		if self.state == 'ZOMBIES':
 			self.zombiesGameTimer = data['time']
+
+	def receiveTriggerDisconnect(self, data):
+		# self.gameManager.loadScene('OtherPlayerDisconnected')
+		self.gameManager.loadScene('LobbyMenu')
