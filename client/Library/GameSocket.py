@@ -110,3 +110,8 @@ class GameSocket(SocketSender):
 			"event": "on_time_sync",
 			"time": time
 		}, False)
+
+	def sendDisconnectEvent(self):
+		return self.send({
+			"event": "on_disconnect"
+		}, False)
