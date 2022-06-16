@@ -14,6 +14,8 @@ class ScoreMenu():
         self.screen = self.gameManager.screen 
         self.sprites = {'SCORE': [], 'PLANT': [], 'ZOMBIE': []}
         self.object = {}
+        self.bg = pygame.image.load('Assets/our/plants-vs-zombies-wallpaper.jpg')
+        self.bg = pygame.transform.scale(self.bg,(720,480))
         # self.dataManager.set('game_winner', 'zombie')
         # self.status = self.dataManager.get('user_role')
 		# self.winner = self.dataManager.get('user_winner')
@@ -33,7 +35,7 @@ class ScoreMenu():
             # self.screen, (200,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
         # )
         self.mainMenuButton = Sprite(
-            self.screen, (500,300), (1,1), "Assets/gameicons/PNG/White/1x/power.png"
+            self.screen, (720/2,300), (2,2), "Assets/gameicons/PNG/White/1x/power.png"
         )
 
         print("masuk awake")
@@ -49,21 +51,21 @@ class ScoreMenu():
         
         if self.status == 'plant' and self.state == 'PLANT' or self.status == 'zombie' and self.state == 'ZOMBIE':
                 self.object['score'] = Display (
-                    'Congratulation!', self.screen, (400,100), 52, color=(255, 255, 255)
+                    'Congratulation!', self.screen, (380,100), 52, color=(255, 255, 255)
                 )
         else:
                 self.object['score'] = Display (
-                    'You Lose!', self.screen, (400,100), 52, color=(255, 0, 0)
+                    'You Lose!', self.screen, (380,100), 52, color=(255, 0, 0)
                 )
         
         if self.status is 'plant':
             self.object['scoreWinner'] = Display (
-                ('PLANT Winner!'), self.screen, (400,200), 48, color=(0, 255, 0)
+                ('PLANT Winner!'), self.screen, (380,200), 48, color=(0, 255, 0)
             )
 
         else:
             self.object['scoreWinner'] = Display (
-                ('ZOMBIE Winner!'), self.screen, (400,200), 48, color=(125, 125, 125)
+                ('ZOMBIE Winner!'), self.screen, (380,200), 48, color=(125, 125, 125)
             )
     
     def events(self):
@@ -80,6 +82,7 @@ class ScoreMenu():
 
     def render(self):
         self.screen.fill((0, 0, 0)) 
+        self.screen.blit(self.bg,(0,0))
         # print("masuk re")
         for sprite in self.sprites[self.state]:
             # print("masuk render2")

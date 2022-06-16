@@ -14,6 +14,7 @@ class LobbyMenu():
 		self.screen = self.gameManager.screen
 		self.sprites = { 'HOME': [], 'CREATE': [], 'JOIN': [] }
 		self.objects = {}
+		self.bg = pygame.image.load('Assets/our/sunflower-wallpaper.jpg')
 
 		self.awake()
 
@@ -28,6 +29,7 @@ class LobbyMenu():
 		self.awakeJoin()
 		
 	def awakeHome(self):
+		# self.objects['home_backgroundWalpaper'] = Sprite(self.screen, (720/2,480/2), (1,1), 'Assets/our/sunflower-wallpaper.jpg')
 		self.objects['home_backMainMenuButton'] = Sprite(self.screen, (100, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/home.png')
 		self.objects['home_createRoomButton'] = Sprite(self.screen, (300, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/import.png')
 		self.objects['home_joinRoomButton'] = Sprite(self.screen, (500, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/exitRight.png')
@@ -40,6 +42,7 @@ class LobbyMenu():
 		self.objects['home_otherPlayerDisconnectedText'] = Display('Other Player Disconnected', self.screen, (240, 100), 24, (255, 255, 255));
 		self.objects['home_returningToMainMenuText'] = Display('Returning to Main Menu..', self.screen, (240, 300), 18, (255, 255, 255));
 
+		# self.sprites[state].append(self.objects['home_backgroundWalpaper'])
 		self.sprites[state].append(self.objects['home_otherPlayerDisconnectedText'])
 		self.sprites[state].append(self.objects['home_returningToMainMenuText'])
 
@@ -88,7 +91,8 @@ class LobbyMenu():
 				self.eventsJoin(event)
 
 	def render(self):
-		self.screen.fill((0, 0, 0))
+		self.screen.fill((255, 255, 255))
+		self.screen.blit(self.bg,(0,0))
 		
 		for sprite in self.sprites[self.state]:
 			sprite.render()

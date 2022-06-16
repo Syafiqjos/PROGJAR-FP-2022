@@ -17,6 +17,8 @@ class MainMenu:
         
 		self.spritesMenu = []
 		self.spritesLoading = []
+		self.bg = pygame.image.load('Assets/our/potato-wallpaper.jpg')
+		self.bg = pygame.transform.scale(self.bg,(720,480))
 
 		self.state = 'MENU' # MENU | LOADING
 
@@ -81,6 +83,7 @@ class MainMenu:
 
 	def render(self):
 		self.screen.fill((0, 0, 0))
+		self.screen.blit(self.bg,(0,0))
 
 		if self.state == 'MENU':
 			for sprite in self.spritesMenu:
