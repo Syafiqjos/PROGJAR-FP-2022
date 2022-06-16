@@ -234,7 +234,7 @@ class ZombieWalker(Sprite):
 
 class ZombieWalkerNormal(ZombieWalker):
 	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_01.png')
+		super().__init__(screen, position, (0.08, 0.08), 'Assets/our/skeleton-01.png')
 		self.type = 'zombies_normal'
 
 	def awake(self):
@@ -244,7 +244,7 @@ class ZombieWalkerNormal(ZombieWalker):
 
 class ZombieWalkerJago(ZombieWalker):
 	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_03.png')
+		super().__init__(screen, position, (0.08, 0.08), 'Assets/our/skeleton-02.png')
 		self.type = 'zombies_cone'
 
 	def awake(self):
@@ -254,7 +254,7 @@ class ZombieWalkerJago(ZombieWalker):
 
 class ZombieWalkerHandal(ZombieWalker):
 	def __init__(self, screen, position):
-		super().__init__(screen, position, (0.08, 0.08), 'Assets/robotball/skeleton-animation_05.png')
+		super().__init__(screen, position, (0.08, 0.08), 'Assets/our/skeleton-03.png')
 		self.type = 'zombies_bucket'
 
 	def awake(self):
