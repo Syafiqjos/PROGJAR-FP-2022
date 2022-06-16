@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 
 from Library.Sprite import Sprite
+from Library.Display import Display
 
 import pygame
 
@@ -16,6 +17,9 @@ class LobbyMenu():
 
 		self.awake()
 
+		self.waiting = 120
+		self.waited = False
+
 	def awake(self):
 		self.state = 'HOME' # 'CREATE', 'JOIN'
 
@@ -29,9 +33,15 @@ class LobbyMenu():
 		self.objects['home_joinRoomButton'] = Sprite(self.screen, (500, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/exitRight.png')
 
 		state = 'HOME'
-		self.sprites[state].append(self.objects['home_backMainMenuButton'])
-		self.sprites[state].append(self.objects['home_createRoomButton'])
-		self.sprites[state].append(self.objects['home_joinRoomButton'])
+		# self.sprites[state].append(self.objects['home_backMainMenuButton'])
+		# self.sprites[state].append(self.objects['home_createRoomButton'])
+		# self.sprites[state].append(self.objects['home_joinRoomButton'])
+
+		self.objects['home_otherPlayerDisconnectedText'] = Display('Other Player Disconnected', self.screen, (240, 100), 24, (255, 255, 255));
+		self.objects['home_returningToMainMenuText'] = Display('Returning to Main Menu..', self.screen, (240, 300), 18, (255, 255, 255));
+
+		self.sprites[state].append(self.objects['home_otherPlayerDisconnectedText'])
+		self.sprites[state].append(self.objects['home_returningToMainMenuText'])
 
 	def awakeCreate(self):
 		self.objects['create_backHomeButton'] = Sprite(self.screen, (100, 100), (1, 1), 'Assets/gameicons/PNG/White/1x/home.png')
@@ -82,6 +92,17 @@ class LobbyMenu():
 		
 		for sprite in self.sprites[self.state]:
 			sprite.render()
+
+		self.update()
+
+	def update(self):
+		if self.waited == False:
+			if self.waiting > 0:
+				self.waiting = self.waiting - 1
+			else:
+				self.waited = True
+				print('Go to Main Menu')
+				self.gameManager.loadScene('MainMenu')
 
 	def goToCreateRoom(self):
 		self.state = 'CREATE'
