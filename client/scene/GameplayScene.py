@@ -555,7 +555,7 @@ class GameplayScene():
 
 		event = data['event']
 
-		if event == 'on_winner':
+		if event == 'on_winner_new':
 			self.receiveTriggerWinner(data)
 		elif event == 'on_plant_spawn':
 			self.receiveTriggerPlantSpawn(data)

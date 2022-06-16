@@ -101,7 +101,7 @@ class GameSocket(SocketSender):
 
 	def sendWinnerEvent(self, winner):
 		return self.send({
-			"event": "on_winner",
+			"event": "on_winner_new",
 			"winner": winner
 		}, False)
 
