@@ -66,6 +66,13 @@ def try_login(entries, role = 'plant'):
 	password_input = entries['Password'].get()
 	role_input = role
 
+	if email_input == '1':
+		email_input = 'syafiqjoschannel@gmail.com'
+		password_input = 'OuPcXq'
+	elif email_input == '2':
+		email_input = 'syafiqjos@gmail.com'
+		password_input = 'dRVVsw'
+
 	print(email_input, password_input)
 
 	if accountSocket != None:
